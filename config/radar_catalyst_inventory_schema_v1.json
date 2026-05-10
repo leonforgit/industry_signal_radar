@@ -1,0 +1,430 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "radar_catalyst_inventory_schema_v1.json",
+  "title": "Radar Catalyst Inventory V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "run_id",
+    "as_of_date",
+    "market_tz",
+    "inventory_version",
+    "summary",
+    "inventory"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "market_tz": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inventory_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_count",
+        "inventory_count",
+        "active_count",
+        "missing_recent_count",
+        "confirmed_count",
+        "watching_count",
+        "open_count",
+        "risk_review_count",
+        "background_count",
+        "expired_count",
+        "new_item_count",
+        "state_changed_count"
+      ],
+      "properties": {
+        "candidate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventory_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "active_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missing_recent_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confirmed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "watching_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "open_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "risk_review_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "background_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expired_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "new_item_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state_changed_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "inventory": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/inventoryEntry"
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "historyEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "as_of_date",
+        "inventory_state",
+        "presence_status",
+        "radar_bucket",
+        "triage_action",
+        "radar_score"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "as_of_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "inventory_state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "watching",
+            "confirmed",
+            "risk_review",
+            "background",
+            "expired"
+          ]
+        },
+        "presence_status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "missing_recent"
+          ]
+        },
+        "radar_bucket": {
+          "type": "string"
+        },
+        "triage_action": {
+          "type": "string"
+        },
+        "radar_score": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "inventoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inventory_id",
+        "radar_object_id",
+        "radar_object_name",
+        "radar_object_type",
+        "current_state",
+        "previous_state",
+        "presence_status",
+        "state_changed",
+        "first_seen_at",
+        "first_seen_sample_date",
+        "last_seen_at",
+        "last_seen_sample_date",
+        "last_seen_run_id",
+        "seen_count",
+        "missed_runs",
+        "state_transition_count",
+        "transition_note",
+        "radar_bucket",
+        "triage_action",
+        "event_driven_lane",
+        "catalyst_type",
+        "hard_or_soft",
+        "catalyst_stage",
+        "evidence_quality",
+        "alert_level",
+        "radar_score",
+        "rank_overall",
+        "next_milestone",
+        "milestone_due_window",
+        "confirmation_gap",
+        "failure_mode",
+        "primary_symbols",
+        "etf_proxies",
+        "theme_overlays",
+        "research_links",
+        "state_history"
+      ],
+      "properties": {
+        "inventory_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_object_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_object_type": {
+          "type": "string",
+          "enum": [
+            "industry",
+            "macro",
+            "company",
+            "special_situation",
+            "watchlist_priority_change"
+          ]
+        },
+        "current_state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "watching",
+            "confirmed",
+            "risk_review",
+            "background",
+            "expired"
+          ]
+        },
+        "previous_state": {
+          "type": "string"
+        },
+        "presence_status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "missing_recent"
+          ]
+        },
+        "state_changed": {
+          "type": "boolean"
+        },
+        "first_seen_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "first_seen_sample_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_seen_sample_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "last_seen_run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "seen_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missed_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state_transition_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "transition_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_bucket": {
+          "type": "string",
+          "enum": [
+            "observe",
+            "research_candidate",
+            "strong_candidate",
+            "strong_alert"
+          ]
+        },
+        "triage_action": {
+          "type": "string",
+          "enum": [
+            "immediate_research",
+            "thesis_watch",
+            "risk_review",
+            "background_only"
+          ]
+        },
+        "event_driven_lane": {
+          "type": "string",
+          "enum": [
+            "hard_catalyst_board",
+            "soft_catalyst_watchlist",
+            "risk_monitor",
+            "background_monitor"
+          ]
+        },
+        "catalyst_type": {
+          "type": "string",
+          "enum": [
+            "earnings_guidance",
+            "approval_registration",
+            "order_project",
+            "capital_markets",
+            "merger_restructuring",
+            "buyback_shareholder_support",
+            "financing_dilution",
+            "litigation_regulatory",
+            "dividend_capital_return",
+            "distress_delisting",
+            "industry_proxy",
+            "policy_regulation",
+            "macro_geopolitical",
+            "product_operation",
+            "general_corporate"
+          ]
+        },
+        "hard_or_soft": {
+          "type": "string",
+          "enum": [
+            "hard",
+            "soft"
+          ]
+        },
+        "catalyst_stage": {
+          "type": "string",
+          "enum": [
+            "announced",
+            "execution_window",
+            "confirmation_window",
+            "signal_clustered",
+            "monitoring",
+            "active_risk"
+          ]
+        },
+        "evidence_quality": {
+          "type": "string",
+          "enum": [
+            "structured_confirmed",
+            "proxy_confirmed",
+            "early_thematic",
+            "narrative_only",
+            "risk_signal"
+          ]
+        },
+        "alert_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "watch",
+            "candidate",
+            "strong_alert"
+          ]
+        },
+        "radar_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rank_overall": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "next_milestone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "milestone_due_window": {
+          "type": "string",
+          "enum": [
+            "days_1_3",
+            "days_3_10",
+            "weeks_2_6",
+            "open_ended"
+          ]
+        },
+        "confirmation_gap": {
+          "type": "string",
+          "minLength": 1
+        },
+        "failure_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_symbols": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "etf_proxies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "theme_overlays": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "research_links": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "state_history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/historyEntry"
+          }
+        }
+      }
+    }
+  }
+}

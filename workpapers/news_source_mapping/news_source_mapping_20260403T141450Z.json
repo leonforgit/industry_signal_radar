@@ -1,0 +1,260 @@
+{
+  "generated_at": "2026-04-03T14:15:01+00:00",
+  "run_at": "2026-04-03T14:14:50+00:00",
+  "sources": [
+    {
+      "source_id": "akshare:news_cctv",
+      "usable_rows": 13,
+      "unmatched": 4,
+      "single_hit": 7,
+      "multi_hit": 2,
+      "single_hit_ratio": 0.5384615384615384,
+      "multi_hit_ratio": 0.15384615384615385,
+      "single_hit_examples": [
+        {
+          "title": "【新思想引领新征程】多业态融合发展 激活文旅产业新动能",
+          "industry_id": "sw_l1_801210",
+          "industry_label": "社会服务"
+        },
+        {
+          "title": "【树立和践行正确政绩观】坚持求真务实 推动学习教育见行见效",
+          "industry_id": "sw_l1_801210",
+          "industry_label": "社会服务"
+        },
+        {
+          "title": "【“十五五”新图景】数智化变革中的万亿新空间",
+          "industry_id": "sw_l1_801890",
+          "industry_label": "机械设备"
+        },
+        {
+          "title": "各地春耕生产持续推进",
+          "industry_id": "sw_l1_801010",
+          "industry_label": "农林牧渔"
+        },
+        {
+          "title": "美以空袭伊朗桥梁等目标 伊朗称打击美以工业设施等",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        }
+      ],
+      "multi_hit_examples": [
+        {
+          "title": "清明假期明天开始 交通部门多措施保出行",
+          "industry_ids": [
+            "sw_l1_801880",
+            "sw_l1_801170"
+          ],
+          "industry_labels": [
+            "汽车",
+            "交通运输"
+          ]
+        },
+        {
+          "title": "清明假期总台推出特别节目",
+          "industry_ids": [
+            "sw_l1_801230",
+            "sw_l1_801740"
+          ],
+          "industry_labels": [
+            "综合",
+            "国防军工"
+          ]
+        }
+      ],
+      "unmatched_examples": [
+        {
+          "title": "前2个月我国中小企业生产经营持续改善"
+        },
+        {
+          "title": "马兴瑞涉嫌严重违纪违法正接受中央纪委国家监委纪律审查和监察调查"
+        },
+        {
+          "title": "国内联播快讯"
+        },
+        {
+          "title": "国际联播快讯"
+        }
+      ]
+    },
+    {
+      "source_id": "akshare:stock_info_global_cls",
+      "usable_rows": 20,
+      "unmatched": 12,
+      "single_hit": 7,
+      "multi_hit": 1,
+      "single_hit_ratio": 0.35,
+      "multi_hit_ratio": 0.05,
+      "single_hit_examples": [
+        {
+          "title": "以军称伊朗向以色列发动新一轮导弹袭击",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        },
+        {
+          "title": "胡塞武装强调不会袖手旁观",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        },
+        {
+          "title": "特朗普要求1.5万亿美元军费",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        },
+        {
+          "title": "事关数据产权登记 国家数据局公开征求意见",
+          "industry_id": "sw_l1_801230",
+          "industry_label": "综合"
+        },
+        {
+          "title": "航锦科技：因涉嫌信披违规被证监会立案",
+          "industry_id": "sw_l1_801790",
+          "industry_label": "非银金融"
+        }
+      ],
+      "multi_hit_examples": [
+        {
+          "title": "财联社4月3日晚间新闻精选",
+          "industry_ids": [
+            "sw_l1_801200",
+            "sw_l1_801750"
+          ],
+          "industry_labels": [
+            "商贸零售",
+            "计算机"
+          ]
+        }
+      ],
+      "unmatched_examples": [
+        {
+          "title": "准油股份修正2025年度业绩预告：预计扣除后营业收入2.695亿元-2.945亿元 股票交易可能被实施退市风险警示"
+        },
+        {
+          "title": "俄外长：美国不应空谈解封霍尔木兹海峡 而应停火"
+        },
+        {
+          "title": "摩根大通：AI需求“挤爆”先进制程 台积电Q1毛利率或超预期上行"
+        },
+        {
+          "title": "诺和诺德称Wegovy片剂平均减重效果显著优于礼来的orforglipron"
+        },
+        {
+          "title": "美国3月标普全球服务业PMI终值49.8 为3年来新低"
+        }
+      ]
+    },
+    {
+      "source_id": "akshare:stock_info_global_em",
+      "usable_rows": 200,
+      "unmatched": 109,
+      "single_hit": 81,
+      "multi_hit": 10,
+      "single_hit_ratio": 0.405,
+      "multi_hit_ratio": 0.05,
+      "single_hit_examples": [
+        {
+          "title": "伊朗战事消耗库存 美国或延迟交讫日本订购“战斧”导弹",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        },
+        {
+          "title": "张雪机车创始人：未来五年 中国大排量摩托会吃掉50%以上的份额",
+          "industry_id": "sw_l1_801880",
+          "industry_label": "汽车"
+        },
+        {
+          "title": "航锦科技：因涉嫌信披违规被证监会立案",
+          "industry_id": "sw_l1_801790",
+          "industry_label": "非银金融"
+        },
+        {
+          "title": "国家数据局综合司向社会公开征求《数据产权登记工作指引（试行）》（公开征求意见稿）意见",
+          "industry_id": "sw_l1_801230",
+          "industry_label": "综合"
+        },
+        {
+          "title": "特朗普要求1.5万亿美元军费",
+          "industry_id": "sw_l1_801740",
+          "industry_label": "国防军工"
+        }
+      ],
+      "multi_hit_examples": [
+        {
+          "title": "兴发集团：拟投13.81亿元新建10万吨/年电池级磷酸铁锂项目",
+          "industry_ids": [
+            "sw_l1_801180",
+            "sw_l1_801780",
+            "sw_l1_801730"
+          ],
+          "industry_labels": [
+            "房地产",
+            "银行",
+            "电力设备"
+          ]
+        },
+        {
+          "title": "油价飙升引发连锁反应 亚马逊加收3.5%附加费 美联航上调行李费",
+          "industry_ids": [
+            "sw_l1_801080",
+            "sw_l1_801170"
+          ],
+          "industry_labels": [
+            "电子",
+            "交通运输"
+          ]
+        },
+        {
+          "title": "上交所：本周对中韩半导体ETF、南方原油LOF、标普油气ETF等溢价较高的基金、*ST正平等异常波动退市风险警示股票进行重点监控",
+          "industry_ids": [
+            "sw_l1_801080",
+            "sw_l1_801790",
+            "sw_l1_801960"
+          ],
+          "industry_labels": [
+            "电子",
+            "非银金融",
+            "石油石化"
+          ]
+        },
+        {
+          "title": "星辉环材：公司聚苯乙烯产品主要原材料为苯乙烯 原材料价格的大幅波动可能给公司带来较大的管理难度",
+          "industry_ids": [
+            "sw_l1_801030",
+            "sw_l1_801960"
+          ],
+          "industry_labels": [
+            "基础化工",
+            "石油石化"
+          ]
+        },
+        {
+          "title": "霍尔木兹海峡航运受阻全球航运成本急剧飙升 目前运费已涨了11倍到12倍",
+          "industry_ids": [
+            "sw_l1_801170",
+            "sw_l1_801790"
+          ],
+          "industry_labels": [
+            "交通运输",
+            "非银金融"
+          ]
+        }
+      ],
+      "unmatched_examples": [
+        {
+          "title": "特朗普寻求在2027财年预算中为政府机构提供2.2万亿的资金"
+        },
+        {
+          "title": "美战机在伊朗坠毁美军展开搜救"
+        },
+        {
+          "title": "美官员证实一架美军战斗机在伊朗境内被击落"
+        },
+        {
+          "title": "美国服务业活动自2023年以来首次萎缩"
+        },
+        {
+          "title": "意大利总理梅洛尼将飞往沙特阿拉伯 并还将访问卡塔尔和阿联酋"
+        }
+      ]
+    }
+  ]
+}

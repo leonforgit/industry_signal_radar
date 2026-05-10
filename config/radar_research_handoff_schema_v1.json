@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "radar_research_handoff_schema_v1.json",
+  "title": "Radar Research Handoff V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "run_id",
+    "as_of_date",
+    "candidate_count",
+    "inventory_summary",
+    "queues",
+    "priority_items"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "inventory_summary": {
+      "type": "object"
+    },
+    "queues": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "immediate_research",
+        "thesis_watch",
+        "risk_review"
+      ],
+      "properties": {
+        "immediate_research": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/handoffItem"
+          }
+        },
+        "thesis_watch": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/handoffItem"
+          }
+        },
+        "risk_review": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/handoffItem"
+          }
+        }
+      }
+    },
+    "priority_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/handoffItem"
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "supportingEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "event_id",
+        "event_type"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "handoffItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "radar_object_id",
+        "radar_object_name",
+        "radar_object_type",
+        "inventory_state",
+        "inventory_previous_state",
+        "inventory_presence",
+        "inventory_seen_count",
+        "inventory_state_changed",
+        "inventory_transition_note",
+        "inventory_first_seen_at",
+        "inventory_last_seen_at",
+        "radar_bucket",
+        "alert_level",
+        "radar_score",
+        "rank_overall",
+        "evidence_quality",
+        "triage_action",
+        "triage_reason",
+        "why_now",
+        "key_evidence",
+        "supporting_events",
+        "confirmation_gap",
+        "next_milestone",
+        "milestone_due_window",
+        "research_question",
+        "research_checkpoints",
+        "followup_path",
+        "hedge_difficulty",
+        "failure_mode",
+        "primary_symbols",
+        "etf_proxies",
+        "theme_overlays",
+        "research_links"
+      ],
+      "properties": {
+        "radar_object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_object_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_object_type": {
+          "type": "string",
+          "enum": [
+            "industry",
+            "macro",
+            "company",
+            "special_situation",
+            "watchlist_priority_change"
+          ]
+        },
+        "inventory_state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "watching",
+            "confirmed",
+            "risk_review",
+            "background",
+            "expired"
+          ]
+        },
+        "inventory_previous_state": {
+          "type": "string"
+        },
+        "inventory_presence": {
+          "type": "string",
+          "enum": [
+            "active",
+            "missing_recent"
+          ]
+        },
+        "inventory_seen_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventory_state_changed": {
+          "type": "boolean"
+        },
+        "inventory_transition_note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inventory_first_seen_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inventory_last_seen_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "radar_bucket": {
+          "type": "string",
+          "enum": [
+            "observe",
+            "research_candidate",
+            "strong_candidate",
+            "strong_alert"
+          ]
+        },
+        "alert_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "watch",
+            "candidate",
+            "strong_alert"
+          ]
+        },
+        "radar_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rank_overall": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "evidence_quality": {
+          "type": "string",
+          "enum": [
+            "structured_confirmed",
+            "proxy_confirmed",
+            "early_thematic",
+            "narrative_only",
+            "risk_signal"
+          ]
+        },
+        "triage_action": {
+          "type": "string",
+          "enum": [
+            "immediate_research",
+            "thesis_watch",
+            "risk_review",
+            "background_only"
+          ]
+        },
+        "triage_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "why_now": {
+          "type": "string",
+          "minLength": 1
+        },
+        "key_evidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "supporting_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/supportingEvent"
+          }
+        },
+        "confirmation_gap": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_milestone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "milestone_due_window": {
+          "type": "string",
+          "enum": [
+            "days_1_3",
+            "days_3_10",
+            "weeks_2_6",
+            "open_ended"
+          ]
+        },
+        "research_question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "research_checkpoints": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "followup_path": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "hedge_difficulty": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "failure_mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_symbols": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "etf_proxies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "theme_overlays": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "research_links": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    }
+  }
+}

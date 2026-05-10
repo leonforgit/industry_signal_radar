@@ -1,0 +1,6 @@
+overlay_id,display_name_cn,route_kind,status,overlay_keywords,notes
+overlay_macro_data,宏观数据/经济指标,macro,active,"PMI;CPI;PPI;GDP;失业率;就业市场;服务业活动;制造业活动;零售销售;工业产出;通胀",用于承接宏观数据和经济指标快讯，不强行压进行业。
+overlay_geo_conflict,地缘冲突/战争扰动,geo,active,"伊朗;美军;战斗机;霍尔木兹海峡;停火;防空警报;爆炸声;被击落;飞行员;德黑兰;空袭;导弹;科威特;泽连斯基",用于承接战争和地缘冲突快讯，默认不直接归到一级行业。
+overlay_budget_policy,财政预算/部门拨款,public_policy,active,"财年预算;预算方案;自由支配预算;拨款;预算权限;关税收入",用于承接部门预算和财政拨款类政策快讯。
+overlay_public_affairs,公共事务/纪检治理,public_affairs,active,"违纪违法;纪律审查;监察调查",用于承接纪检监察和公共事务快讯。
+overlay_news_roundup,综合快讯栏目,media_roundup,active,"国内联播快讯;国际联播快讯",用于承接栏目聚合标题，避免误算为行业事件。

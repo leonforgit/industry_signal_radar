@@ -1,0 +1,10 @@
+overlay_id,display_name_cn,object_kind,status,overlay_keywords,linked_industry_ids,notes
+theme_pork_cycle,猪周期,theme_industry_chain,active,"猪周期;生猪;猪价;养殖;仔猪;饲料",sw_l1_801010,"用于承接猪价、养殖利润、产能去化和情绪扩散。"
+chain_solar_pv,光伏主链,industry_chain,active,"光伏;硅料;硅片;电池片;组件;逆变器;储能",sw_l1_801730;sw_l1_801030;sw_l1_801080;sw_l1_801890,"用于承接价格链、排产、招标和装机线索。"
+theme_ai_compute,AI算力链,theme_industry_chain,active,"算力;AIDC;数据中心;光模块;液冷;服务器;GPU",sw_l1_801750;sw_l1_801770;sw_l1_801080;sw_l1_801730;sw_l1_801890,"用于承接主题叙事、订单扩散和资本开支链。"
+theme_broker_cycle,券商交易链,theme,active,"券商;证券;两融;并购重组;活跃资本市场",sw_l1_801790;sw_l1_801780,"用于承接成交活跃度、两融扩张和并购催化。"
+chain_coal_chemical,煤化工链,industry_chain,active,"煤化工;煤制烯烃;甲醇;煤价;价差",sw_l1_801950;sw_l1_801960;sw_l1_801030,"用于承接煤价、油价和价差修复线索。"
+theme_shipping_cycle,航运景气链,theme_industry_chain,active,"航运;集运;干散货;BDI;运价;港口",sw_l1_801170,"用于承接运价、吞吐量和航运景气波动。"
+theme_innovative_drug,创新药链,theme_industry_chain,active,"创新药;CXO;BD;出海;临床;医保",sw_l1_801150,"用于承接临床、授权合作和政策定价线索。"
+theme_power_grid,电网设备链,industry_chain,active,"电网设备;特高压;配网;电改;变压器",sw_l1_801730;sw_l1_801160,"用于承接电网投资、订单和招标线索。"
+theme_aerospace,商业航天链,theme_industry_chain,active,"商业航天;航天;火箭;运载火箭;卫星;金色穹顶",sw_l1_801740,"用于承接商业航天、火箭发射、卫星系统和航天防务主题线索。"

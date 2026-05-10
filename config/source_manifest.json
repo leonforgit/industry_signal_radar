@@ -1,0 +1,801 @@
+{
+  "manifest_version": 1,
+  "manifest_name": "industry-signal-radar-source-manifest",
+  "default_timezone": "Asia/Shanghai",
+  "primary_market": "CN",
+  "registry_role": "planning_and_runtime_registration",
+  "sources": [
+    {
+      "source_id": "qlib_dynamic_provider",
+      "label_cn": "共享 Qlib 动态 provider",
+      "primary_category": "shared_market_data",
+      "usable_layers": [
+        "market_data",
+        "money_flow"
+      ],
+      "integration_status": "configured",
+      "priority": "critical",
+      "trust_tier": "internal_shared",
+      "weight_tier": "base",
+      "scheduler_class": "external_refresh",
+      "access_mode": "filesystem_read_only",
+      "collector_owner": "shared_quant_pipeline",
+      "locator": "/opt/qlib/qlib_data/cn_alla_dynamic_2021",
+      "role_cn": "行业相对强度、成交额和横截面聚合的共享市场数据底座",
+      "notes": "只读复用，不由本系统刷新。"
+    },
+    {
+      "source_id": "raw_source_dir",
+      "label_cn": "共享原始 source 目录",
+      "primary_category": "shared_market_data",
+      "usable_layers": [
+        "market_data",
+        "money_flow"
+      ],
+      "integration_status": "configured",
+      "priority": "critical",
+      "trust_tier": "internal_shared",
+      "weight_tier": "base",
+      "scheduler_class": "external_refresh",
+      "access_mode": "filesystem_read_only",
+      "collector_owner": "shared_quant_pipeline",
+      "locator": "/opt/market-data/qlib-source/source",
+      "role_cn": "共享原始行情与扩展字段目录，供行业聚合和回放复用",
+      "notes": "只读复用，不由本系统写入。"
+    },
+    {
+      "source_id": "historical_master",
+      "label_cn": "共享历史 master 映射",
+      "primary_category": "shared_market_data",
+      "usable_layers": [
+        "industry_registry",
+        "market_data"
+      ],
+      "integration_status": "configured",
+      "priority": "critical",
+      "trust_tier": "internal_shared",
+      "weight_tier": "base",
+      "scheduler_class": "external_refresh",
+      "access_mode": "filesystem_read_only",
+      "collector_owner": "shared_quant_pipeline",
+      "locator": "/opt/quant-runtime/universe/a_share_historical_master_latest.json",
+      "role_cn": "股票基础映射与历史对象校验底座",
+      "notes": "只读复用，用于行业对象和代表标的映射。"
+    },
+    {
+      "source_id": "joinquant_plate_data",
+      "label_cn": "JoinQuant 行业概念数据",
+      "primary_category": "industry_mapping",
+      "usable_layers": [
+        "industry_registry"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "mapping_provider",
+      "weight_tier": "base",
+      "scheduler_class": "daily",
+      "access_mode": "website_or_api_reference",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.joinquant.com/help/api/plateData",
+      "role_cn": "行业、概念、主题和板块映射辅助源",
+      "notes": "用于行业对象层和主题映射辅助，不直接产生告警。"
+    },
+    {
+      "source_id": "akshare",
+      "label_cn": "AKShare",
+      "primary_category": "market_data_api",
+      "usable_layers": [
+        "market_data",
+        "money_flow",
+        "fundamental_proxy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "critical",
+      "trust_tier": "library",
+      "weight_tier": "base",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://akshare.akfamily.xyz/",
+      "role_cn": "A 股价格、成交、部分资金流和行业代理数据的主要程序化入口",
+      "notes": "v1 核心市场数据补充源。"
+    },
+    {
+      "source_id": "akshare:stock_sector_fund_flow_rank",
+      "label_cn": "东方财富行业资金流排行",
+      "primary_category": "money_flow",
+      "usable_layers": [
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "market_portal_api",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_sector_fund_flow_rank",
+      "role_cn": "行业级主力净流入与净占比显性资金痕迹",
+      "notes": "当前已接入资金层和 flow overlay。"
+    },
+    {
+      "source_id": "akshare:stock_fund_flow_industry",
+      "label_cn": "东方财富细分行业资金流",
+      "primary_category": "money_flow",
+      "usable_layers": [
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "market_portal_api",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_fund_flow_industry",
+      "role_cn": "细分行业资金流补充，用于弥补一级行业资金流粒度不足",
+      "notes": "当前用作 sector flow exact match 的补充层。"
+    },
+    {
+      "source_id": "akshare:stock_hsgt_hold_stock_em",
+      "label_cn": "沪深股通持股排行",
+      "primary_category": "money_flow",
+      "usable_layers": [
+        "money_flow"
+      ],
+      "integration_status": "active_v1_low_weight",
+      "priority": "medium",
+      "trust_tier": "market_portal_api",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_hsgt_hold_stock_em",
+      "role_cn": "北向显性持股痕迹补充",
+      "notes": "当前公开榜单时间戳较旧，系统已自动降权并写健康状态。"
+    },
+    {
+      "source_id": "akshare:stock_margin_detail",
+      "label_cn": "两融明细",
+      "primary_category": "money_flow",
+      "usable_layers": [
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "exchange_disclosure",
+      "weight_tier": "medium",
+      "scheduler_class": "off_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_margin_detail_sse / stock_margin_detail_szse",
+      "role_cn": "融资买入额与融资余额显性交易结构痕迹",
+      "notes": "当前按最近可用交易日回退，不强依赖当日披露。"
+    },
+    {
+      "source_id": "akshare:stock_lhb_detail_daily_sina",
+      "label_cn": "龙虎榜日榜",
+      "primary_category": "money_flow",
+      "usable_layers": [
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "market_portal_api",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_lhb_detail_daily_sina",
+      "role_cn": "龙虎榜显性活跃席位痕迹补充",
+      "notes": "当前用于行业代表股 / 候选股是否上榜的快速判定。"
+    },
+    {
+      "source_id": "akshare:stock_notice_report",
+      "label_cn": "东方财富公告快报",
+      "primary_category": "announcement",
+      "usable_layers": [
+        "announcement",
+        "news_policy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "market_portal_api",
+      "weight_tier": "high",
+      "scheduler_class": "off_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_notice_report",
+      "role_cn": "公告硬信息快速压缩入口",
+      "notes": "当前仅对代表股候选池做行业压缩，不保存原文库。"
+    },
+    {
+      "source_id": "akshare:macro_shipping_bdi",
+      "label_cn": "BDI 航运景气指数",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "macro_data_api",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare macro_shipping_bdi",
+      "role_cn": "交通运输中的航运景气代理样板",
+      "notes": "当前已接入 `sw_l1_801170` 的 fundamental proxy。"
+    },
+    {
+      "source_id": "akshare:macro_china_freight_index",
+      "label_cn": "航贸运价指数",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "macro_data_api",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare macro_china_freight_index",
+      "role_cn": "交通运输中的国内外运价综合代理补充",
+      "notes": "当前与 `macro_shipping_bdi` 一起构成 shipping_cycle_proxy 的组合代理。"
+    },
+    {
+      "source_id": "akshare:macro_china_market_margin_sh",
+      "label_cn": "上交所融资融券总量",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "exchange_disclosure",
+      "weight_tier": "medium",
+      "scheduler_class": "off_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare macro_china_market_margin_sh",
+      "role_cn": "券商交易链中的上交所两融景气代理",
+      "notes": "当前已接入 `sw_l1_801790` 的 broker_cycle_proxy。"
+    },
+    {
+      "source_id": "akshare:macro_china_market_margin_sz",
+      "label_cn": "深交所融资融券总量",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "money_flow"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "exchange_disclosure",
+      "weight_tier": "medium",
+      "scheduler_class": "off_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare macro_china_market_margin_sz",
+      "role_cn": "券商交易链中的深交所两融景气代理",
+      "notes": "当前已接入 `sw_l1_801790` 的 broker_cycle_proxy。"
+    },
+    {
+      "source_id": "akshare:macro_china_society_electricity",
+      "label_cn": "全社会用电量分类情况表",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "macro_data_api",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare macro_china_society_electricity",
+      "role_cn": "公用事业 / 电力需求链中的月频经营代理",
+      "notes": "当前已接入 `sw_l1_801160` 的 utility_electricity_proxy。"
+    },
+    {
+      "source_id": "yfinance",
+      "label_cn": "yfinance",
+      "primary_category": "market_data_api",
+      "usable_layers": [
+        "market_data"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "library",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://pypi.org/project/yfinance/",
+      "role_cn": "跨市场价格和 ETF 辅助数据源",
+      "notes": "主要用于跨市场代理和 ETF 补充，不作为 A 股主底座。"
+    },
+    {
+      "source_id": "tushare_pro",
+      "label_cn": "Tushare Pro",
+      "primary_category": "market_data_api",
+      "usable_layers": [
+        "money_flow",
+        "market_data",
+        "industry_registry"
+      ],
+      "integration_status": "optional_upgrade",
+      "priority": "medium",
+      "trust_tier": "structured_api",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "optional_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://tushare.pro/document/2",
+      "role_cn": "更稳定的结构化资金流、ETF 和映射补充源",
+      "notes": "视积分和稳定性决定是否纳入 v1 升级。"
+    },
+    {
+      "source_id": "cninfo",
+      "label_cn": "巨潮资讯",
+      "primary_category": "announcement",
+      "usable_layers": [
+        "announcement",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "critical",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.cninfo.com.cn/",
+      "role_cn": "A 股公告主源，提供硬信息和事件确认",
+      "notes": "公告类信号高权重，不和论坛热度等价。"
+    },
+    {
+      "source_id": "sse_disclosures",
+      "label_cn": "上交所披露",
+      "primary_category": "announcement",
+      "usable_layers": [
+        "announcement",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.sse.com.cn/",
+      "role_cn": "交易所披露补充源，用于公告确认和交易制度事件",
+      "notes": "与巨潮形成官方双重确认。"
+    },
+    {
+      "source_id": "szse_disclosures",
+      "label_cn": "深交所披露",
+      "primary_category": "announcement",
+      "usable_layers": [
+        "announcement",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.szse.cn/",
+      "role_cn": "交易所披露补充源，用于公告确认和交易制度事件",
+      "notes": "与巨潮形成官方双重确认。"
+    },
+    {
+      "source_id": "bse_disclosures",
+      "label_cn": "北交所披露",
+      "primary_category": "announcement",
+      "usable_layers": [
+        "announcement",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "official",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.bse.cn/",
+      "role_cn": "北交所公告和制度事件补充源",
+      "notes": "v1 低于沪深主板优先级，但纳入全行业覆盖骨架。"
+    },
+    {
+      "source_id": "gov_cn_policy_library",
+      "label_cn": "中国政府网政策文件库",
+      "primary_category": "policy",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "critical",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "off_session",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.gov.cn/zhengce/zhengcewenjianku/",
+      "role_cn": "顶层政策和制度信号主源",
+      "notes": "政策类高权重触发源。"
+    },
+    {
+      "source_id": "stats_gov_cn",
+      "label_cn": "国家统计局国家数据",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "daily",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://data.stats.gov.cn/",
+      "role_cn": "官方宏观与行业经营代理变量主源",
+      "notes": "更多用于 Phase 5，不参与高频新闻热度。"
+    },
+    {
+      "source_id": "miit_operation_monitoring",
+      "label_cn": "工信部运行监测协调局",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "official",
+      "weight_tier": "high",
+      "scheduler_class": "daily",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.miit.gov.cn/jgsj/yxj/xxfb/index.html",
+      "role_cn": "工业运行、开工和景气代理变量的重要官方补充源",
+      "notes": "兼具政策和运行监测属性。"
+    },
+    {
+      "source_id": "moa_monitoring",
+      "label_cn": "农业农村部",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "official",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.moa.gov.cn/",
+      "role_cn": "农业、畜牧和农产品链的官方经营代理源",
+      "notes": "用于猪链等农业方向的经营状态代理。"
+    },
+    {
+      "source_id": "akshare_hog_cycle_proxy",
+      "label_cn": "AKShare 猪链基本面代理",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "library",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare: index_hog_spot_price + spot_hog_lean_price_soozhu + spot_mixed_feed_soozhu",
+      "role_cn": "猪价、饲料价和生猪指数代理的 v1 样板集",
+      "notes": "当前只覆盖 sw_l1_801010 农林牧渔，后续再扩其他行业。"
+    },
+    {
+      "source_id": "nea_releases",
+      "label_cn": "国家能源局",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "official",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.nea.gov.cn/",
+      "role_cn": "电力、能源和装机类代理变量补充源",
+      "notes": "更多用于能源和公用事业链条。"
+    },
+    {
+      "source_id": "ndrc_releases",
+      "label_cn": "国家发改委",
+      "primary_category": "fundamental_proxy",
+      "usable_layers": [
+        "fundamental_proxy",
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "official",
+      "weight_tier": "medium",
+      "scheduler_class": "daily",
+      "access_mode": "official_site_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.ndrc.gov.cn/",
+      "role_cn": "价格、产能和宏观产业政策补充源",
+      "notes": "部分行业的政策与经营代理会在这里交叉出现。"
+    },
+    {
+      "source_id": "akshare:stock_info_global_cls",
+      "label_cn": "财联社全球快讯",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "critical",
+      "trust_tier": "primary_financial",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_info_global_cls",
+      "role_cn": "全行业高频财经快讯主源，提供行业催化和舆情扩散线索",
+      "notes": "当前已接入 news/policy overlay，与 news_cctv、stock_info_global_em 共同构成第一版多源新闻层。"
+    },
+    {
+      "source_id": "akshare:stock_info_global_em",
+      "label_cn": "东方财富全球快讯",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "active_v1",
+      "priority": "high",
+      "trust_tier": "primary_financial",
+      "weight_tier": "medium_high",
+      "scheduler_class": "market_session",
+      "access_mode": "python_library",
+      "collector_owner": "industry_signal_radar",
+      "locator": "AKShare stock_info_global_em",
+      "role_cn": "全行业泛财经快讯补充源，扩大政策、交易所和产业新闻覆盖",
+      "notes": "当前已接入 news/policy overlay，作为财联社与新闻联播之外的第三个公开新闻源。"
+    },
+    {
+      "source_id": "openbb:market_context",
+      "label_cn": "OpenBB 跨市场上下文",
+      "primary_category": "macro",
+      "usable_layers": [
+        "openbb_sidecar"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "api_public",
+      "weight_tier": "low",
+      "scheduler_class": "market_session",
+      "access_mode": "openbb_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "/api/v1/equity/price/historical",
+      "role_cn": "外围市场上下文 sidecar",
+      "notes": "当前用于 SPY / QQQ / KWEB 的市场背景，不直接进入行业主评分。"
+    },
+    {
+      "source_id": "openbb:fred_context",
+      "label_cn": "OpenBB FRED 宏观上下文",
+      "primary_category": "macro",
+      "usable_layers": [
+        "openbb_sidecar"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "api_public",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "openbb_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "/api/v1/economy/fred_series",
+      "role_cn": "宏观环境 sidecar",
+      "notes": "当前用于 WTI / 美债10Y / 美国CPI 这类宏观背景，不直接进入行业主评分。"
+    },
+    {
+      "source_id": "openbb:shipping_context",
+      "label_cn": "OpenBB 航运 chokepoint 上下文",
+      "primary_category": "macro",
+      "usable_layers": [
+        "openbb_sidecar"
+      ],
+      "integration_status": "active_v1",
+      "priority": "medium",
+      "trust_tier": "api_public",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "openbb_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "/api/v1/economy/shipping/chokepoint_info + /api/v1/economy/shipping/chokepoint_volume",
+      "role_cn": "航运与地缘扰动 sidecar",
+      "notes": "当前用于霍尔木兹 / 苏伊士 / 曼德海峡 / 台湾海峡的运力背景，不直接进入行业主评分。"
+    },
+    {
+      "source_id": "openbb:sec_sic_search",
+      "label_cn": "OpenBB SEC SIC 搜索",
+      "primary_category": "mapping",
+      "usable_layers": [
+        "company_mapping"
+      ],
+      "integration_status": "ready_candidate",
+      "priority": "medium",
+      "trust_tier": "api_public",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "openbb_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "/api/v1/regulators/sec/sic_search",
+      "role_cn": "行业名称与 SIC 辅助映射",
+      "notes": "适合后续增强公司名和行业名辅助映射，不直接进入主评分。"
+    },
+    {
+      "source_id": "openbb:sec_institutions_search",
+      "label_cn": "OpenBB SEC 机构搜索",
+      "primary_category": "mapping",
+      "usable_layers": [
+        "company_mapping"
+      ],
+      "integration_status": "ready_candidate",
+      "priority": "medium",
+      "trust_tier": "api_public",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "openbb_api",
+      "collector_owner": "industry_signal_radar",
+      "locator": "/api/v1/regulators/sec/institutions_search",
+      "role_cn": "机构实体辅助映射",
+      "notes": "更适合后续公司/机构识别增强，不直接进入主评分。"
+    },
+    {
+      "source_id": "cls",
+      "label_cn": "财联社",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "critical",
+      "trust_tier": "primary_financial",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.cls.cn/",
+      "role_cn": "高频财经新闻主源，提供行业催化和资金关注扩散线索",
+      "notes": "新闻主层之一。"
+    },
+    {
+      "source_id": "stcn",
+      "label_cn": "证券时报",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "primary_financial",
+      "weight_tier": "high",
+      "scheduler_class": "market_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.stcn.com/",
+      "role_cn": "主流财经媒体补充源",
+      "notes": "与财联社形成主流财经新闻层。"
+    },
+    {
+      "source_id": "cs_com",
+      "label_cn": "中证网",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "primary_financial",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.cs.com.cn/",
+      "role_cn": "行业新闻和市场快讯补充源",
+      "notes": "作为主流财经媒体的补充覆盖。"
+    },
+    {
+      "source_id": "cnstock",
+      "label_cn": "中国证券网",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "high",
+      "trust_tier": "primary_financial",
+      "weight_tier": "medium",
+      "scheduler_class": "market_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.cnstock.com/",
+      "role_cn": "行业新闻和交易所口径补充源",
+      "notes": "适合和公告、政策源交叉确认。"
+    },
+    {
+      "source_id": "jiemian",
+      "label_cn": "界面新闻",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "primary_financial",
+      "weight_tier": "medium",
+      "scheduler_class": "off_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.jiemian.com/",
+      "role_cn": "财经与产业报道补充源",
+      "notes": "更偏深度产业线索，不一定高频。"
+    },
+    {
+      "source_id": "thepaper_finance",
+      "label_cn": "澎湃财经",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "medium",
+      "trust_tier": "primary_financial",
+      "weight_tier": "medium",
+      "scheduler_class": "off_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://www.thepaper.cn/",
+      "role_cn": "财经与政策报道补充源",
+      "notes": "对政策和行业舆情扩散有辅助价值。"
+    },
+    {
+      "source_id": "xueqiu_auxiliary",
+      "label_cn": "雪球社区",
+      "primary_category": "news",
+      "usable_layers": [
+        "news_policy"
+      ],
+      "integration_status": "planned_v1",
+      "priority": "low",
+      "trust_tier": "community",
+      "weight_tier": "low",
+      "scheduler_class": "off_session",
+      "access_mode": "website_scrape",
+      "collector_owner": "industry_signal_radar",
+      "locator": "https://xueqiu.com/",
+      "role_cn": "社区热度和叙事扩散辅助观察源",
+      "notes": "只做低权重辅助，不作为高置信主触发。"
+    }
+  ]
+}

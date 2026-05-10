@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "proxy_sets": [
+    {
+      "proxy_id": "hog_cycle_proxy",
+      "industry_id": "sw_l1_801010",
+      "display_name_cn": "农林牧渔",
+      "family": "hog_cycle",
+      "status": "active",
+      "source_ids": [
+        "akshare:index_hog_spot_price",
+        "akshare:spot_hog_lean_price_soozhu",
+        "akshare:spot_mixed_feed_soozhu"
+      ],
+      "notes": "v1 先用猪价、饲料价和生猪指数做代理样板，其他行业后续逐步补齐。"
+    },
+    {
+      "proxy_id": "shipping_cycle_proxy",
+      "industry_id": "sw_l1_801170",
+      "display_name_cn": "交通运输",
+      "family": "shipping_cycle",
+      "status": "active",
+      "source_ids": [
+        "akshare:macro_shipping_bdi",
+        "akshare:macro_china_freight_index"
+      ],
+      "notes": "v1 先用 BDI 和航贸运价指数作为交通运输中的航运景气代理样板。"
+    },
+    {
+      "proxy_id": "broker_cycle_proxy",
+      "industry_id": "sw_l1_801790",
+      "display_name_cn": "非银金融",
+      "family": "broker_cycle",
+      "status": "active",
+      "source_ids": [
+        "akshare:macro_china_market_margin_sh",
+        "akshare:macro_china_market_margin_sz"
+      ],
+      "notes": "v1 用沪深两融总量和融资买入额变化作为券商交易景气代理样板。"
+    },
+    {
+      "proxy_id": "utility_electricity_proxy",
+      "industry_id": "sw_l1_801160",
+      "display_name_cn": "公用事业",
+      "family": "utility_electricity",
+      "status": "active",
+      "source_ids": [
+        "akshare:macro_china_society_electricity"
+      ],
+      "notes": "v1 用全社会用电量和第二产业用电量同比作为公用事业 / 电力需求代理样板。"
+    }
+  ]
+}

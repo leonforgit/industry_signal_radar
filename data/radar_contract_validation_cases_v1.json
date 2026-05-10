@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "case_id": "industry_report_only",
+      "description": "单个 industry 对象进入 research_candidate，只进日报不发 Bark。",
+      "snapshot_object": {
+        "radar_bucket": "research_candidate",
+        "trigger_state": "report_only",
+        "alert_level": "watch"
+      },
+      "expected": {
+        "should_trigger_bark": false
+      }
+    },
+    {
+      "case_id": "upgrade_to_strong_alert",
+      "description": "对象从 research_candidate 升级到 strong_alert，触发 Bark。",
+      "snapshot_object": {
+        "radar_bucket": "strong_alert",
+        "is_upgraded": true,
+        "trigger_state": "bark_candidate",
+        "alert_level": "strong_alert"
+      },
+      "expected": {
+        "should_trigger_bark": true
+      }
+    },
+    {
+      "case_id": "hot_but_low_followup",
+      "description": "高热度但低 followup 的对象应被压低，不进 Bark。",
+      "snapshot_object": {
+        "radar_bucket": "observe",
+        "followup_value": 32,
+        "trigger_state": "suppressed",
+        "alert_level": "none"
+      },
+      "expected": {
+        "should_trigger_bark": false
+      }
+    }
+  ]
+}

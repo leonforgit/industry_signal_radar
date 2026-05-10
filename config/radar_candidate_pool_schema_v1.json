@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "radar_candidate_pool_schema_v1.json",
+  "title": "Radar Candidate Pool V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "candidate_pool_run_id",
+    "as_of_date",
+    "source_contract_version",
+    "shared_feed_input",
+    "sidecar_inputs",
+    "candidates"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "candidate_pool_run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "report_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "event_window_end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "market_sample_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "expected_sample_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "source_contract_version": {
+      "type": "string",
+      "const": "v2"
+    },
+    "shared_feed_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feed_name",
+        "feed_generated_at",
+        "consumer_name"
+      ],
+      "properties": {
+        "feed_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feed_generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "consumer_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sidecar_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_name",
+          "signal_family"
+        ],
+        "properties": {
+          "source_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "signal_family": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "radar_object_type",
+          "radar_object_id",
+          "radar_object_name",
+          "radar_object_scope",
+          "candidate_origin",
+          "shared_feed_events",
+          "sidecar_evidence"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "radar_object_type": {
+            "type": "string",
+            "enum": [
+              "industry",
+              "macro",
+              "company",
+              "special_situation",
+              "watchlist_priority_change"
+            ]
+          },
+          "radar_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "radar_object_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "radar_object_scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_origin": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "shared_feed",
+                "sidecar"
+              ]
+            }
+          },
+          "shared_feed_events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "event_id",
+                "event_type"
+              ],
+              "properties": {
+                "event_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "event_type": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "sidecar_evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_name",
+                "signal_value"
+              ],
+              "properties": {
+                "source_name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "signal_value": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

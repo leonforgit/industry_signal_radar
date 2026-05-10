@@ -1,0 +1,173 @@
+{
+  "generated_at": "2026-04-03T13:21:30+00:00",
+  "run_at": "2026-04-03T13:21:19+00:00",
+  "sources": [
+    {
+      "source_id": "akshare:news_cctv",
+      "fetched_count": 13,
+      "usable_row_count": 13,
+      "unique_title_count": 13,
+      "duplicate_title_count": 0,
+      "date_coverage_ratio": 1.0,
+      "time_coverage_ratio": 0.0,
+      "used_date": "20260403",
+      "note": "used_date=20260403",
+      "sample_titles": [
+        "【新思想引领新征程】多业态融合发展 激活文旅产业新动能",
+        "【树立和践行正确政绩观】坚持求真务实 推动学习教育见行见效",
+        "【“十五五”新图景】数智化变革中的万亿新空间",
+        "前2个月我国中小企业生产经营持续改善",
+        "各地春耕生产持续推进"
+      ]
+    },
+    {
+      "source_id": "akshare:stock_info_global_cls",
+      "fetched_count": 20,
+      "usable_row_count": 16,
+      "unique_title_count": 16,
+      "duplicate_title_count": 0,
+      "date_coverage_ratio": 1.0,
+      "time_coverage_ratio": 1.0,
+      "used_date": "2026-04-03",
+      "note": "used_date=2026-04-03",
+      "sample_titles": [
+        "宾巴朝格特当选蒙古国国家大呼拉尔主席",
+        "三艘阿曼籍船只通过霍尔木兹海峡",
+        "恒力重工一季度签约108艘新造船项目",
+        "千里科技：2025年净利润8441万元 同比增长111%",
+        "泽连斯基：将于近日就乌美安全保障剩余问题给出答复"
+      ]
+    },
+    {
+      "source_id": "akshare:stock_info_global_em",
+      "fetched_count": 200,
+      "usable_row_count": 200,
+      "unique_title_count": 200,
+      "duplicate_title_count": 0,
+      "date_coverage_ratio": 1.0,
+      "time_coverage_ratio": 1.0,
+      "used_date": "2026-04-03",
+      "note": "used_date=2026-04-03",
+      "sample_titles": [
+        "2026年度电影总票房突破120亿",
+        "白宫经济顾问哈塞特：预计目前就业市场的状况将会持续",
+        "全球首个机器人全产业链专业展4月22日在深圳开幕",
+        "分析师：三星电子Q1利润有望增长六倍 或逼近2025年全年",
+        "内存一年涨四倍！国产手机厂商集体涨价：会持续多久？苹果会加入吗？"
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "left_source_id": "akshare:news_cctv",
+      "right_source_id": "akshare:stock_info_global_cls",
+      "left_unique_title_count": 13,
+      "right_unique_title_count": 16,
+      "exact_overlap_count": 0,
+      "exact_overlap_ratio_vs_left": 0.0,
+      "exact_overlap_ratio_vs_right": 0.0,
+      "approx_overlap_count": 0,
+      "approx_overlap_ratio_vs_left": 0.0,
+      "approx_overlap_ratio_vs_right": 0.0,
+      "exact_overlap_samples": [],
+      "approx_overlap_samples": []
+    },
+    {
+      "left_source_id": "akshare:news_cctv",
+      "right_source_id": "akshare:stock_info_global_em",
+      "left_unique_title_count": 13,
+      "right_unique_title_count": 200,
+      "exact_overlap_count": 0,
+      "exact_overlap_ratio_vs_left": 0.0,
+      "exact_overlap_ratio_vs_right": 0.0,
+      "approx_overlap_count": 0,
+      "approx_overlap_ratio_vs_left": 0.0,
+      "approx_overlap_ratio_vs_right": 0.0,
+      "exact_overlap_samples": [],
+      "approx_overlap_samples": []
+    },
+    {
+      "left_source_id": "akshare:stock_info_global_cls",
+      "right_source_id": "akshare:stock_info_global_em",
+      "left_unique_title_count": 16,
+      "right_unique_title_count": 200,
+      "exact_overlap_count": 5,
+      "exact_overlap_ratio_vs_left": 0.3125,
+      "exact_overlap_ratio_vs_right": 0.025,
+      "approx_overlap_count": 6,
+      "approx_overlap_ratio_vs_left": 0.375,
+      "approx_overlap_ratio_vs_right": 0.03,
+      "exact_overlap_samples": [
+        "2026年度电影总票房突破120亿",
+        "三艘阿曼籍船只通过霍尔木兹海峡",
+        "泽连斯基将于近日就乌美安全保障剩余问题给出答复",
+        "深交所本周共对151起证券异常交易行为采取自律监管措施",
+        "高乐股份拟定向募资不超854亿元用于补充流动资金"
+      ],
+      "approx_overlap_samples": [
+        {
+          "left_title": "三艘阿曼籍船只通过霍尔木兹海峡",
+          "right_title": "三艘阿曼籍船只通过霍尔木兹海峡",
+          "similarity": 1.0
+        },
+        {
+          "left_title": "泽连斯基：将于近日就乌美安全保障剩余问题给出答复",
+          "right_title": "泽连斯基：将于近日就乌美安全保障剩余问题给出答复",
+          "similarity": 1.0
+        },
+        {
+          "left_title": "深交所：本周共对151起证券异常交易行为采取自律监管措施",
+          "right_title": "深交所：本周共对151起证券异常交易行为采取自律监管措施",
+          "similarity": 1.0
+        },
+        {
+          "left_title": "高乐股份：拟定向募资不超8.54亿元 用于补充流动资金",
+          "right_title": "高乐股份：拟定向募资不超8.54亿元 用于补充流动资金",
+          "similarity": 1.0
+        },
+        {
+          "left_title": "2026年度电影总票房突破120亿",
+          "right_title": "2026年度电影总票房突破120亿",
+          "similarity": 1.0
+        },
+        {
+          "left_title": "以军称伊朗向以色列发动新一轮导弹袭击",
+          "right_title": "伊朗对以色列发动新一轮导弹袭击",
+          "similarity": 0.8485
+        }
+      ]
+    }
+  ],
+  "unique_title_examples": {
+    "akshare:news_cctv": [
+      "【新思想引领新征程】多业态融合发展 激活文旅产业新动能",
+      "【树立和践行正确政绩观】坚持求真务实 推动学习教育见行见效",
+      "【“十五五”新图景】数智化变革中的万亿新空间",
+      "前2个月我国中小企业生产经营持续改善",
+      "各地春耕生产持续推进",
+      "马兴瑞涉嫌严重违纪违法正接受中央纪委国家监委纪律审查和监察调查",
+      "清明假期明天开始 交通部门多措施保出行",
+      "清明假期总台推出特别节目"
+    ],
+    "akshare:stock_info_global_cls": [
+      "宾巴朝格特当选蒙古国国家大呼拉尔主席",
+      "恒力重工一季度签约108艘新造船项目",
+      "千里科技：2025年净利润8441万元 同比增长111%",
+      "全国消费品以旧换新工作推进电视电话会议在京召开：要求持续提高补贴审核和资金兑付效率",
+      "山东章鼓：因2024年年报存在虚假记载将被实施其他风险警示 股票简称变更为“ST章鼓”",
+      "储能电芯供不应求：订单排期至明年 企业加速扩产应对需求爆发",
+      "泰达股份：拟向泰达供应链转让其持有的泰达能源51%股权 交易价格1.87亿元",
+      "长虹能源：拟9.99亿元投建马来西亚锂电池生产基地"
+    ],
+    "akshare:stock_info_global_em": [
+      "白宫经济顾问哈塞特：预计目前就业市场的状况将会持续",
+      "全球首个机器人全产业链专业展4月22日在深圳开幕",
+      "分析师：三星电子Q1利润有望增长六倍 或逼近2025年全年",
+      "内存一年涨四倍！国产手机厂商集体涨价：会持续多久？苹果会加入吗？",
+      "恒力重工一季度累计签约新造船项目108艘",
+      "美国总统特朗普的2027财年预算案拟取消对各州的40亿美元电动汽车充电基础设施资助",
+      "全国消费品以旧换新工作推进电视电话会议在京召开",
+      "特朗普2027年预算案包含为“金色穹顶”项目提供资金的内容"
+    ]
+  }
+}

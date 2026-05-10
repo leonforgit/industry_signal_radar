@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Industry Signal Radar daily report email every morning before open
+
+[Timer]
+OnCalendar=*-*-* 08:15
+Persistent=true
+RandomizedDelaySec=120
+Unit=industry-signal-radar-daily-report.service
+
+[Install]
+WantedBy=timers.target

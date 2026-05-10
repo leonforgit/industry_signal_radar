@@ -1,0 +1,17 @@
+[Unit]
+Description=Industry Signal Radar Runtime
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=radar
+WorkingDirectory=/opt/industry-signal-radar
+EnvironmentFile=-/opt/industry-signal-radar/config/industry_signal_radar.env
+TimeoutStartSec=20min
+ExecStart=/opt/industry-signal-radar/run_industry_signal_radar.sh
+StandardOutput=append:/opt/industry-signal-radar/logs/industry_signal_radar.log
+StandardError=append:/opt/industry-signal-radar/logs/industry_signal_radar.log
+
+[Install]
+WantedBy=multi-user.target

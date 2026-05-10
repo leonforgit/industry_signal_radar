@@ -1,0 +1,205 @@
+{
+  "generated_at": "2026-04-12T09:30:00Z",
+  "radar_run_id": "scan:2026-04-12T09:20:00Z",
+  "as_of_date": "2026-04-12",
+  "market_tz": "Asia/Shanghai",
+  "ranking_version": "v1",
+  "preference_profile": {
+    "early_discovery_first": true,
+    "mixed_object_board": true,
+    "bucketed_report": true
+  },
+  "summary": {
+    "candidate_count": 3,
+    "strong_alert_count": 1,
+    "strong_candidate_count": 1,
+    "research_candidate_count": 1,
+    "observe_count": 0,
+    "bark_trigger_count": 1
+  },
+  "objects": [
+    {
+      "radar_object_type": "industry",
+      "radar_object_id": "sw_l1_801170",
+      "radar_object_name": "交通运输",
+      "radar_object_scope": "CN A-share",
+      "runtime_state": "strong_alert",
+      "radar_bucket": "strong_alert",
+      "radar_score": 87,
+      "rank_in_bucket": 1,
+      "rank_overall": 1,
+      "alert_level": "strong_alert",
+      "catalyst_type": "industry_proxy",
+      "hard_or_soft": "soft",
+      "catalyst_stage": "monitoring",
+      "next_milestone": "复核 proxy 变化是否持续",
+      "milestone_due_window": "weeks_2_6",
+      "event_driven_lane": "soft_catalyst_watchlist",
+      "evidence_quality": "proxy_confirmed",
+      "triage_action": "immediate_research",
+      "confirmation_gap": "当前仍缺公告硬信息确认。",
+      "hedge_difficulty": "low",
+      "failure_mode": "若代理变量和价格结构不能连续共振，当前更可能只是阶段性扰动。",
+      "worth_watching": 90,
+      "why_now_strength": 91,
+      "confidence": 76,
+      "followup_value": 88,
+      "why_now": "共享事件升温，同时资金和航运 proxy 出现新增确认。",
+      "key_evidence": [
+        "共享事件跨源确认",
+        "航运 proxy 继续增强",
+        "代表股与 ETF 同步活跃"
+      ],
+      "supporting_events": [
+        {
+          "source": "news_event_hub",
+          "event_id": "evt_industry_001",
+          "event_type": "industry_event"
+        }
+      ],
+      "followup_path": [
+        "复核 proxy 变化是否持续",
+        "确认是否有公告或政策层补充",
+        "检查代表股扩散是否延续"
+      ],
+      "risk_flags": [
+        "仍可能受单日交易扰动影响"
+      ],
+      "is_new": true,
+      "is_upgraded": true,
+      "previous_bucket": "research_candidate",
+      "trigger_state": "bark_candidate",
+      "dedup_key": "industry:sw_l1_801170",
+      "primary_symbols": [
+        "601919.SH"
+      ],
+      "etf_proxies": [
+        "516780.SH"
+      ],
+      "theme_overlays": [
+        "shipping_chain"
+      ],
+      "research_links": []
+    },
+    {
+      "radar_object_type": "macro",
+      "radar_object_id": "macro:cn_power_grid_capex",
+      "radar_object_name": "中国电网投资",
+      "radar_object_scope": "China macro",
+      "runtime_state": "candidate",
+      "radar_bucket": "strong_candidate",
+      "radar_score": 78,
+      "rank_in_bucket": 1,
+      "rank_overall": 2,
+      "alert_level": "candidate",
+      "catalyst_type": "policy_regulation",
+      "hard_or_soft": "soft",
+      "catalyst_stage": "signal_clustered",
+      "next_milestone": "确认后续政策/监管表态是否升级成可执行里程碑",
+      "milestone_due_window": "weeks_2_6",
+      "event_driven_lane": "soft_catalyst_watchlist",
+      "evidence_quality": "proxy_confirmed",
+      "triage_action": "immediate_research",
+      "confirmation_gap": "中国电网投资 已有方向性变化，但仍缺公司公告或订单层跟进。",
+      "hedge_difficulty": "high",
+      "failure_mode": "若代理变量反弹不能延续，或与价格、公告脱节，容易形成伪催化。",
+      "worth_watching": 81,
+      "why_now_strength": 84,
+      "confidence": 68,
+      "followup_value": 82,
+      "why_now": "宏观和产业事件开始共同指向电网投资方向，已具备研究入口。",
+      "key_evidence": [
+        "宏观口径出现新增政策信号",
+        "行业事件指向电网设备方向"
+      ],
+      "supporting_events": [
+        {
+          "source": "news_event_hub",
+          "event_id": "evt_macro_001",
+          "event_type": "macro_event"
+        }
+      ],
+      "followup_path": [
+        "检查电网设备行业与代表股是否同步确认",
+        "确认后续预算和招标线索"
+      ],
+      "risk_flags": [
+        "当前仍偏主题先行，基本面确认不足"
+      ],
+      "is_new": true,
+      "is_upgraded": false,
+      "previous_bucket": "observe",
+      "trigger_state": "report_only",
+      "dedup_key": "macro:cn_power_grid_capex",
+      "primary_symbols": [
+        "许继电气"
+      ],
+      "etf_proxies": [],
+      "theme_overlays": [
+        "power_grid_equipment"
+      ],
+      "research_links": []
+    },
+    {
+      "radar_object_type": "company",
+      "radar_object_id": "company:300750.SZ",
+      "radar_object_name": "宁德时代",
+      "radar_object_scope": "CN A-share",
+      "runtime_state": "warming",
+      "radar_bucket": "research_candidate",
+      "radar_score": 66,
+      "rank_in_bucket": 1,
+      "rank_overall": 3,
+      "alert_level": "watch",
+      "catalyst_type": "general_corporate",
+      "hard_or_soft": "soft",
+      "catalyst_stage": "monitoring",
+      "next_milestone": "核对公司事件是否会传导到行业层",
+      "milestone_due_window": "open_ended",
+      "event_driven_lane": "soft_catalyst_watchlist",
+      "evidence_quality": "early_thematic",
+      "triage_action": "thesis_watch",
+      "confirmation_gap": "“宁德时代”事件已形成初步线索，仍需确认兑现力度和行业扩散。",
+      "hedge_difficulty": "low",
+      "failure_mode": "若事件没有兑现为公告、订单或行业扩散，容易退化成一次性个股脉冲。",
+      "worth_watching": 69,
+      "why_now_strength": 71,
+      "confidence": 63,
+      "followup_value": 74,
+      "why_now": "公司事件进入共享候选池，并与产业链主题形成交叉验证。",
+      "key_evidence": [
+        "共享公司事件进入候选池",
+        "产业链 overlay 可提供后续研究抓手"
+      ],
+      "supporting_events": [
+        {
+          "source": "news_event_hub",
+          "event_id": "evt_company_001",
+          "event_type": "company_event"
+        }
+      ],
+      "followup_path": [
+        "核对公司事件是否会传导到行业层",
+        "观察代表股与 ETF 是否出现同步变化"
+      ],
+      "risk_flags": [
+        "单公司事件未必升级成行业机会"
+      ],
+      "is_new": true,
+      "is_upgraded": false,
+      "previous_bucket": "observe",
+      "trigger_state": "report_only",
+      "dedup_key": "company:300750.SZ",
+      "primary_symbols": [
+        "300750.SZ"
+      ],
+      "etf_proxies": [
+        "159755.SZ"
+      ],
+      "theme_overlays": [
+        "battery_chain"
+      ],
+      "research_links": []
+    }
+  ]
+}

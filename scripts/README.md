@@ -1,0 +1,203 @@
+# 脚本地图
+
+当前这个项目已经有第一版稳定脚本入口。
+
+当前已经建立的基础脚本入口：
+
+- `radar_config.py`
+  - 读取 `config/runtime_defaults.json`
+  - 读取 `config/source_manifest.json`
+  - 作为后续 collector / runner / deploy 脚本的统一默认配置入口
+- `radar_industry_registry.py`
+  - 读取 `data/industry_registry_sw_level1.csv`
+  - 作为全行业骨架 registry 的统一读取入口
+  - 当前也支持读取 `industry_etf_proxy_candidates.csv`
+  - 当前也支持读取 `industry_etf_proxies_primary.csv`
+  - 当前也支持读取 `industry_representative_stock_candidates.csv`
+  - 当前也支持读取 `industry_representative_stocks_primary.csv`
+  - 当前也支持读取 `theme_chain_overlays.csv`
+  - 当前也支持读取 `theme_chain_overlay_members.csv`
+- `build_etf_proxy_candidates.py`
+  - 抓取 `fund_etf_spot_em`
+  - 按行业关键词生成第一版 ETF 代理候选表
+  - 同步支持压出 primary ETF proxy
+- `build_representative_stock_candidates.py`
+  - 抓取 `stock_board_industry_name_em`
+  - 对每个一级行业抓 `stock_board_industry_cons_em`
+  - 生成第一版代表股 candidates 和 primary 表
+- `radar_bark.py`
+  - 统一处理 Bark 配置解析和发送
+- `radar_scan_runner.py`
+  - 运行全行业 market scan
+  - 产出 signal snapshots / alert events / 输出 JSON
+  - 按去重规则尝试发送 Bark
+  - 当前还会把 `主题 / 产业链映射 / 代表股 / ETF proxy / 成交占比 / 内部上涨占比 / 龙头牵引 / 公告硬信息 / 显性资金痕迹` 接进快照和正文
+  - 当前 `RADAR_DEBUG_PROGRESS=1` 时，也会输出更细的逐行业历史抓取进度，方便远端 one-shot 排障
+- `radar_flow_signals.py`
+  - 第一版显性资金痕迹层
+  - 当前接入 `行业资金流 / ETF spot / 北向榜单 / 两融明细 / 龙虎榜`
+  - 产出 `aux_flow_score / flow_signal_evidence`
+- `radar_announcements.py`
+  - 第一版公告压缩层
+  - 当前接入 `stock_notice_report`
+  - 按代表股候选池压缩成行业级 `announcement_score / announcement_events`
+  - 当前已经补上第一版 `公告去重 / 事件簇压缩 / signal_tags`
+- `radar_news_policy.py`
+  - 第一批新闻 / 政策压缩层
+  - 当前接入 `akshare:news_cctv`
+  - 产出 `policy_score / policy_articles`
+- `evaluate_news_source_overlap.py`
+  - 对 `CCTV / CLS / 东方财富` 新闻源做标题重叠与近似重叠快照
+  - 产出 `workpapers/news_source_overlap/*.json|md`
+- `evaluate_news_industry_mapping.py`
+  - 对新闻层当前关键词行业映射做命中率快照
+  - 产出 `workpapers/news_source_mapping/*.json|md`
+- `radar_fundamental_proxy.py`
+  - 第一批行业基本面代理层
+  - 当前接入 `hog_cycle_proxy -> sw_l1_801010`
+  - 当前接入 `shipping_cycle_proxy -> sw_l1_801170`
+  - 当前接入 `broker_cycle_proxy -> sw_l1_801790`
+  - 产出 `fundamental_proxy_score / fundamental_proxy_evidence`
+- `radar_validation_summary.py`
+  - 从 `alert_events` 自动生成后验验证摘要
+  - 输出 `industry_signal_validation_latest.json / .md`
+- `radar_event_db.py`
+  - 读取 `config/event_db_schema.sql`
+  - 读取 `config/source_manifest.json`
+  - 初始化独立 event db，并写入第一版 source registry snapshot
+- `radar_runtime_health.py`
+  - 读取 `config/event_db_schema.sql`
+  - 向独立 event db 写入 `runtime_health` / `source_health`
+  - 同步输出 `health/runtime_health_latest.json`
+- `radar_runtime_bootstrap.py`
+  - 读取运行配置和 source manifest
+  - 执行隔离边界 guardrail 校验
+  - 支持 `--check-only`
+  - 创建 runtime 目录、初始化 event db，并记录 bootstrap health
+- `run_industry_signal_radar.sh`
+  - 远端 wrapper
+  - 负责激活 venv、加锁并调用 `radar_scan_runner.py`
+- `run_radar_daily_report_email.sh`
+  - 远端日报 wrapper
+  - 负责在 a private runtime configured outside this repository 上显式重跑一轮 `workspace outputs -> email send`
+  - 默认复用已存在的 SMTP env，并按 quality gate 决定是否发送
+- `bootstrap_remote_industry_signal_radar_env.sh`
+  - 远端环境预检 / 建立独立 venv
+  - 支持 `--check-only`
+- `install_remote_industry_signal_radar.sh`
+  - 把脚本、配置、wrapper 和 systemd 单元同步到 a private runtime configured outside this repository
+  - 启用基础 scan timer 和日报邮件 timer
+- `install_radar_daily_smtp_env.sh`
+  - 给 a private runtime configured outside this repository 安装 Radar 日报 SMTP env
+  - 默认兼容已有的 remote runtime 邮件发信配置
+- `validate_remote_industry_signal_radar.sh`
+  - 本地发起远端 one-shot 验收
+  - 当前支持 `start / status`
+  - 当前会用 `nohup + status file + pid file` 在 a private runtime configured outside this repository 上拉起 detached validation run
+  - 当前 `status` 视图也会显式带出 `openbb:yfinance` 的 source health，并检查告警正文是否包含 `外围环境`
+  - 当前也支持用 `BODY_MODE_OVERRIDE=full` 临时预览 full 告警正文，而不改默认生产配置
+- `sync_latest_radar_payload.py`
+  - 从 a private runtime configured outside this repository 拉取远端 `industry_signal_scan_latest.json`
+  - 镜像到本地 `output/industry_signal_scan_latest.json`
+  - 同步生成给 `Investment` 层消费的 `output/industry_signal_scan_bridge_latest.json`
+  - 当前也会尽量镜像远端 `candidate pool / snapshot / bark summary / daily report` 的 latest 产物
+  - 当前也会镜像远端情绪 sidecar 的 `market/company sentiment csv`
+- `build_radar_candidate_pool.py`
+  - 从 live shared feed 生成 `radar_candidate_pool_latest.json`
+  - 当前会把共享 feed 和 sidecar 证据压成同一份 candidate pool
+- `build_radar_opportunity_snapshot.py`
+  - 把 `radar_candidate_pool_latest.json` 压成 `radar_opportunity_snapshot_latest.json`
+  - 产出 `output/snapshots/` 下的 dated + latest snapshot
+  - 当前也会显式保留旧运行状态机字段 `runtime_state`，避免与新排序 bucket 混用
+  - 当前也会吸收市场级 / 公司级情绪 sidecar，并把它们落成 `market_sentiment_context / sentiment_context`
+- `validate_radar_opportunity_snapshot.py`
+  - 对 `radar_opportunity_snapshot*.json` 做无第三方依赖的结构校验
+  - 当前用于本地 schema/fixture 校验与后续脚本验收
+- `build_radar_bark_summary.py`
+  - 从 `radar_opportunity_snapshot_latest.json` 直接生成 `snapshot-driven` 的 Bark 候选摘要
+  - 当前只依赖 snapshot 字段，不再回读 Markdown 或旧扫描摘要
+- `build_radar_research_handoff.py`
+  - 从 `radar_opportunity_snapshot_latest.json` 直接生成 `研究交接板`
+  - 当前按 `triage_action` 把对象分流到 `Immediate Research Queue / Thesis Watch / Risk Review`
+  - 当前同时产出 Markdown 和 JSON，便于研究承接脚本直接消费
+- `build_radar_ipo_watchlist.py`
+  - 抓取 A 股新股日历，生成 `radar_ipo_watchlist_latest.json / .md`
+  - 当前覆盖今日申购、上市、缴款事件，并用发行价、发行 PE / 行业 PE、中签率做打新初筛
+  - 作为 Kimi 初研层和日报 `IPO 打新初筛` 的结构化输入
+- `build_radar_hk_ipo_watchlist.py`
+  - 抓取 HKEX 新股上市日历，生成 `radar_hk_ipo_watchlist_latest.json / .md`
+  - 当前覆盖近期港股新上市窗口，并交给 Kimi 初研层做 A/H IPO 混排初筛
+- `build_radar_structural_signal_sidecar.py`
+  - 从 snapshot 和 catalyst inventory 中抽取 `30-120d` 中长期隐性线索
+  - 当前会压缩订单、产能、政策、资本动作、基本面质量等慢变量，作为日报 `中长期隐性线索` 与 Kimi watch_items 的输入
+- `build_radar_kimi_research_harness.py`
+  - 在日报渲染前调用 Kimi Code，对 Top/递补候选输出结构化研究 verdict
+  - 当前覆盖 12 个候选，并把 `promote / keep / watch_only / reject / risk_review / research_gap` 直接接入 Top Opportunities 排序和降权
+  - 当前支持 sanitized retry：原始 evidence 触发 Kimi 风控时，会保留 evidence id/type、隐去原文并按 4 个一组拆批重试
+- `validate_radar_kimi_research.py`
+  - 校验 `radar_kimi_research_harness_latest.json`
+  - 当前会检查 verdict schema、hard guardrail、watch_only 必须降权、promote 必须正向加权，以及 next_action 不得是浅层核实口径
+- `validate_radar_research_handoff.py`
+  - 对 `radar_research_handoff*.json` 做无第三方依赖的结构校验
+  - 当前用于保证研究承接接口能稳定演进
+- `render_radar_daily_report.py`
+  - 从 `radar_opportunity_snapshot_latest.json` 渲染 `Radar 投资机会日报`
+  - 产出 `output/reports/` 下的 dated + latest Markdown / HTML / PDF 主稿
+  - 当前默认按 `morning_brief` 输出一到两页晨会版，而不是全量 bucket 转储
+  - 当前也会把 `triage_action / evidence_quality / catalyst` 翻译成更适合 PM 扫读的呈现语言
+  - 当前也会把市场级 / 公司级情绪 sidecar 翻译成 PM 可读语义
+- `build_radar_workspace_outputs.py`
+  - 串起 `snapshot -> validate -> bark summary -> research handoff -> handoff validate -> IPO watchlist -> Kimi editorial -> Kimi research harness -> daily report -> calibration`
+  - 作为当前本地 Radar 输出编排入口
+  - 当前会写出 `output/runs/radar_harness_manifest_latest.json`，记录每个节点的 command、输出、耗时和降级状态
+- `build_radar_agent_task_queue.py`
+  - 从 harness manifest、source readiness、Kimi harness、新闻补核和邮件投递 health 中生成 `output/agent_tasks/radar_agent_task_queue_latest.json/.md`
+  - 每条任务都带 owner agent、允许修改范围、上下文路径和验收命令，用于把 Kimi/Codex worker 变成可 review 的执行队列
+- `send_radar_daily_report_email.py`
+  - 读取 `snapshot / quality / daily report PDF`
+  - 默认在 quality gate 为 `pass` 时通过 SMTP 投递 `Radar 投资机会日报`
+  - 当前邮件正文只保留摘要，正式日报通过 `PDF` 附件发送
+  - 支持 `--dry-run`
+- `radar_sentiment_sidecar.py`
+  - 读取量化主系统的市场级 / 公司级情绪 sidecar
+  - 当前提供 `market sentiment context` 和 `company sentiment lookup`
+- `check_radar_contract_cases.py`
+  - 校验三类首批 contract 场景样例
+  - 当前覆盖 `只进日报 / 升级触发 Bark / 高热度低 followup 被压低`
+- `smoke_test_radar_workspace_outputs.sh`
+  - 本地 smoke 命令
+  - 串起输出编排与 contract 场景检查
+- `smoke_test_radar_candidate_pool.py`
+  - candidate pool live builder 的最小 smoke
+  - 校验 `industry + macro` 混合输入和 sidecar 合并
+- `smoke_test_snapshot_bark_dispatch.py`
+  - snapshot-driven Bark live dispatch 的最小 smoke
+  - 校验 `alert_events / dispatch_attempts` 的真实写入链
+
+远端连接口径：真实主机、端口、跳板和 SSH 参数只放在私有未跟踪环境中。
+
+后续如果开始做工程化，优先把稳定入口放在这里，例如：
+
+- `build_industry_universe.py`
+- `collect_news_signals.py`
+- `collect_fundamental_proxies.py`
+- `build_sector_state_snapshot.py`
+- `validate_signal_history.py`
+
+当前脚本层的真实边界是：
+
+- 已有真实全行业 market scan runner
+- 已有真实 Bark 分发尝试链
+- 真实 runner 当前也会同步写出 `candidate pool / snapshot / bark summary / daily report`
+- 当前已经新增独立的 `industry-signal-radar-daily-report.timer`
+- 当前日报邮件发送链已经可以完全在 remote runtime 侧脚本化完成，不依赖 Codex/agent 常驻
+- 当前日报邮件已经切到 `PDF` 正式投递，不再把 Markdown 正文直接塞进邮件
+- 当前 Radar 已开始消费量化主系统的 `6` 类情绪分数，但它们只作为 sidecar，不替代 catalyst 主引擎
+- 已有真实远端部署与定时入口
+- 已有第一批新闻 / 政策 collector
+- 已有第一批公告 collector
+- 已有第一批显性资金痕迹 collector
+- 已有三类行业专属基本面代理 collector
+- 已有第一版验证摘要脚本
+- 还没有更广行业代理 collector 和成熟历史回放
+- 远端 one-shot 验收 helper 已经建立，但当前仍在继续校准 “validation unit -> target run / 状态文件” 这条验证链

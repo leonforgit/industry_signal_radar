@@ -1,0 +1,6 @@
+layer_id,layer_name,purpose,scope,status,notes
+coverage_backbone,全行业覆盖骨架,确保所有行业都被纳入系统视野,full_industry_universe,active,"第一版建议以申万一级为稳定骨架，并保留向申万二级扩展位。"
+research_objects,研究对象层,定义真正用于分析和跟踪的行业/赛道/子行业对象,full_industry_universe_plus_selected_overlays,planned,"在覆盖骨架之上组织研究对象，不要求与单一官方分类一一对应。"
+theme_chain_overlays,主题与产业链覆盖层,承接跨行业主题和产业链对象,selected_cross_industry_objects,planned,"例如算力链、光伏主链等。"
+trading_proxy_layer,交易代理层,承接指数、ETF、龙头和代表股,full_industry_universe_plus_selected_overlays,planned,"服务价格、资金、扩散和技术结构观察。"
+archetype_seed_set,原型样板集,前期方法开发、校准和失败经验积累,small_representative_subset,active,"不是项目边界，只是开发和校准工具。"

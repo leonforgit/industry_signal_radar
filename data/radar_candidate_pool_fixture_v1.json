@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-04-12T09:05:00Z",
+  "candidate_pool_run_id": "candidate-pool:2026-04-12T09:00:00Z",
+  "as_of_date": "2026-04-12",
+  "source_contract_version": "v1",
+  "shared_feed_input": {
+    "feed_name": "news_event_hub.industry_radar_feed_latest",
+    "feed_generated_at": "2026-04-12T08:58:00Z",
+    "consumer_name": "radar"
+  },
+  "sidecar_inputs": [
+    {
+      "source_name": "radar_flow_signals",
+      "signal_family": "money_flow"
+    },
+    {
+      "source_name": "radar_announcements",
+      "signal_family": "announcement"
+    },
+    {
+      "source_name": "radar_fundamental_proxy",
+      "signal_family": "fundamental_proxy"
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "industry:sw_l1_801170",
+      "radar_object_type": "industry",
+      "radar_object_id": "sw_l1_801170",
+      "radar_object_name": "交通运输",
+      "radar_object_scope": "CN A-share",
+      "candidate_origin": [
+        "shared_feed",
+        "sidecar"
+      ],
+      "shared_feed_events": [
+        {
+          "event_id": "evt_industry_001",
+          "event_type": "industry_event"
+        }
+      ],
+      "sidecar_evidence": [
+        {
+          "source_name": "radar_flow_signals",
+          "signal_value": 0.73
+        },
+        {
+          "source_name": "radar_fundamental_proxy",
+          "signal_value": 0.81
+        }
+      ]
+    },
+    {
+      "candidate_id": "macro:cn_power_grid_capex",
+      "radar_object_type": "macro",
+      "radar_object_id": "macro:cn_power_grid_capex",
+      "radar_object_name": "中国电网投资",
+      "radar_object_scope": "China macro",
+      "candidate_origin": [
+        "shared_feed"
+      ],
+      "shared_feed_events": [
+        {
+          "event_id": "evt_macro_001",
+          "event_type": "macro_event"
+        }
+      ],
+      "sidecar_evidence": []
+    },
+    {
+      "candidate_id": "company:300750.SZ",
+      "radar_object_type": "company",
+      "radar_object_id": "company:300750.SZ",
+      "radar_object_name": "宁德时代",
+      "radar_object_scope": "CN A-share",
+      "candidate_origin": [
+        "shared_feed",
+        "sidecar"
+      ],
+      "shared_feed_events": [
+        {
+          "event_id": "evt_company_001",
+          "event_type": "company_event"
+        }
+      ],
+      "sidecar_evidence": [
+        {
+          "source_name": "radar_announcements",
+          "signal_value": 0.46
+        }
+      ]
+    }
+  ]
+}

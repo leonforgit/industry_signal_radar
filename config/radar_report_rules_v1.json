@@ -1,0 +1,53 @@
+{
+  "version": "v1",
+  "report_style": "morning_brief_v2",
+  "top_opportunities_limit": 3,
+  "summary_focus_count": 3,
+  "triage_board_limit": 3,
+  "hard_catalyst_board_limit": 3,
+  "soft_catalyst_watchlist_limit": 3,
+  "risk_monitor_limit": 2,
+  "key_events_limit": 8,
+  "structural_signal_limit": 3,
+  "company_event_board_limit": 4,
+  "proxy_signal_board_limit": 4,
+  "bucket_table_limits": {
+    "strong_alert": 5,
+    "strong_candidate": 5,
+    "research_candidate": 6,
+    "observe": 5
+  },
+  "industry_event_min_score": 8,
+  "industry_event_fallback_score": 10,
+  "industry_observe_force_fallback_without_structured_source": true,
+  "top_opportunities_max_precheck_penalty": 30,
+  "top_opportunities_exclude_triage": [
+    "background_only"
+  ],
+  "quality_gates": {
+    "min_immediate_research": 1,
+    "max_immediate_research": 12,
+    "fail_if_freshness_lag_days_gt": 0,
+    "warn_if_sample_age_days_gt": 1,
+    "fail_if_sample_age_days_gt": 5,
+    "warn_if_report_line_count_gt": 180,
+    "require_inventory_alignment": true,
+    "require_kimi_research_harness": true,
+    "require_source_readiness_pass": true,
+    "require_source_health_pass": true,
+    "require_immediate_items_in_top_opportunities": false,
+    "forbid_source_tags_in_report": true,
+    "forbid_mapping_placeholders_in_top_opportunities": true,
+    "forbid_downgraded_earnings_in_top_opportunities": true,
+    "require_industry_tracking_symbols_in_report": true,
+    "forbid_generic_key_event_logic": true,
+    "require_ipo_source_gate": true,
+    "required_sections": [
+      "## 一、今日关键事件",
+      "## 二、三条作战线",
+      "## 三、中长期隐性线索",
+      "## 四、IPO / 打新申购窗口",
+      "## 五、后台状态"
+    ]
+  }
+}

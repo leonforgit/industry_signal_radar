@@ -1,0 +1,6 @@
+object_id,display_name_cn,display_name_en,object_kind,signal_archetype,market_scope,legacy_research_usage,priority_tier,status,selection_rationale
+hog_farming,生猪养殖,Hog Farming,industry,price_and_inventory_cycle,A_share_or_cross_market,fundamental_heuristics_only,P0,candidate,"价格、库存、产能和盈利代理相对清晰，适合验证周期反转型起势。"
+solar_pv_chain,光伏主链,Solar PV Chain,industry_chain,price_capacity_inventory_policy_cycle,A_share_H_share,fundamental_heuristics_only,P0,candidate,"产业链长、信号密度高，适合测试链条式传导。"
+china_brokers,中国券商,China Brokers,financial_subsector,liquidity_risk_appetite_policy_cycle,A_share_H_share,fundamental_heuristics_only,P0,candidate,"补足非商品周期样板，适合观察资金层和技术层先动。"
+china_ai_data_centers,中国AI数据中心/算力链,China AI Data Centers / Compute Chain,theme_industry_chain,theme_capex_order_policy_cycle,cross_market,fundamental_heuristics_only,P0,candidate,"适合测试主题叙事与产业验证并存的结构，但不把既有行业研究当作对象模板。"
+china_coal_chemicals,中国煤化工,China Coal Chemicals,industry_chain,spread_margin_repair_cycle,A_share,fundamental_heuristics_only,P1,candidate,"适合验证价差和利润分配修复型起势，但不把既有行业研究当作对象模板。"

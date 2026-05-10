@@ -1,0 +1,498 @@
+{
+  "deployment": {
+    "server_host": "",
+    "ssh_options": "",
+    "remote_root": "/opt/industry-signal-radar",
+    "remote_venv": "/opt/industry-signal-radar/.venv",
+    "service_name": "industry-signal-radar.service",
+    "timer_name": "industry-signal-radar.timer",
+    "daily_report_service_name": "industry-signal-radar-daily-report.service",
+    "daily_report_timer_name": "industry-signal-radar-daily-report.timer"
+  },
+  "shared_market_data": {
+    "access_mode": "read_only",
+    "qlib_provider_uri": "/opt/qlib/qlib_data/cn_alla_dynamic_2021",
+    "raw_source_dir": "/opt/market-data/qlib-source/source",
+    "historical_master_path": "/opt/quant-runtime/universe/a_share_historical_master_latest.json"
+  },
+  "shared_news_event_hub": {
+    "enabled": true,
+    "industry_radar_feed_path": "/opt/news-event-hub/state/consumer_exports/industry_radar_feed_latest.json",
+    "opportunity_report_feed_path": "/opt/news-event-hub/state/consumer_exports/opportunity_report_feed_latest.json",
+    "research_feed_path": "/opt/news-event-hub/state/consumer_exports/research_feed_latest.json",
+    "source_health_path": "/opt/news-event-hub/state/consumer_exports/source_health_latest.json",
+    "source_id": "shared:news_event_hub:industry_radar_feed",
+    "max_feed_age_minutes": 90,
+    "fallback_to_private_overlay": false,
+    "industry_aliases": {
+      "石油天然气": "石油石化",
+      "黄金有色": "有色金属",
+      "半导体": "电子",
+      "新能源车": "汽车",
+      "航运": "交通运输",
+      "消费电子": "电子"
+    }
+  },
+  "runtime_paths": {
+    "runtime_root": ".",
+    "config_dir": "config",
+    "state_dir": "state",
+    "event_db_path": "state/industry_signal_radar.db",
+    "log_dir": "logs",
+    "cache_dir": "cache",
+    "output_dir": "output",
+    "health_dir": "health",
+    "lock_dir": "locks"
+  },
+  "isolation": {
+    "shared_read_only_paths": [
+      "/opt/qlib/qlib_data/cn_alla_dynamic_2021",
+      "/opt/market-data/qlib-source/source",
+      "/opt/quant-runtime/universe/a_share_historical_master_latest.json",
+      "/opt/quant-runtime/news_event_hub/state/consumer_exports"
+    ],
+    "forbidden_write_paths": [
+      "/opt/qlib/qlib_data/cn_alla_dynamic_2021",
+      "/opt/market-data/qlib-source/source",
+      "/opt/quant-runtime/universe/a_share_historical_master_latest.json",
+      "/opt/quant-runtime/news_event_hub/state/consumer_exports",
+      "/opt/quant-runtime/paper_trader/state.db",
+      "/opt/quant-runtime/output/paper_trader",
+      "/opt/quant-runtime/run_qlib_daily_pipeline.sh"
+    ],
+    "forbidden_systemd_units": [
+      "qlib-daily-pipeline.service",
+      "qlib-daily-pipeline.timer"
+    ]
+  },
+  "polling": {
+    "market_timezone": "Asia/Shanghai",
+    "market_session_poll_minutes": 10,
+    "off_session_poll_minutes": 30,
+    "after_close_full_rebuild_time": "15:20",
+    "morning_session": "09:30-11:30",
+    "afternoon_session": "13:00-15:00"
+  },
+  "scan": {
+    "history_lookback_days": 40,
+    "heat_board_limit": 120,
+    "flow_cache_ttl_minutes": 20,
+    "etf_spot_cache_ttl_minutes": 60,
+    "max_alerts_per_run": 6,
+    "candidate_threshold": 0.74,
+    "strong_threshold": 0.84,
+    "heat_min_for_candidate": 0.18,
+    "heat_min_for_strong": 0.32,
+    "composite_weights": {
+      "money_flow": 0.6,
+      "heat": 0.15,
+      "fundamental": 0.1,
+      "policy": 0.15
+    },
+    "fundamental_blend": {
+      "valuation_weight": 0.4,
+      "proxy_weight": 0.6
+    },
+    "openbb_market_context": {
+      "enabled": false,
+      "lookback_days": 30,
+      "symbols": [
+        {
+          "symbol": "SPY",
+          "name": "SPY",
+          "label": "美股大盘",
+          "provider": "yfinance"
+        },
+        {
+          "symbol": "QQQ",
+          "name": "QQQ",
+          "label": "美股科技",
+          "provider": "yfinance"
+        },
+        {
+          "symbol": "KWEB",
+          "name": "KWEB",
+          "label": "中概互联网",
+          "provider": "yfinance"
+        }
+      ]
+    },
+    "openbb_sidecar_context": {
+      "fred": {
+        "enabled": false,
+        "series": [
+          {
+            "symbol": "DCOILWTICO",
+            "label": "WTI油价",
+            "transform": "pct_change",
+            "lookback_points": 20,
+            "start_days": 90
+          },
+          {
+            "symbol": "DGS10",
+            "label": "美债10Y",
+            "transform": "delta_bps",
+            "lookback_points": 20,
+            "start_days": 90
+          },
+          {
+            "symbol": "CPIAUCSL",
+            "label": "美国CPI",
+            "transform": "yoy_pct",
+            "lookback_points": 12,
+            "start_days": 450
+          }
+        ]
+      },
+      "shipping": {
+        "enabled": false,
+        "lookback_days": 60,
+        "change_window_days": 7,
+        "chokepoints": [
+          {
+            "id": "strait_of_hormuz",
+            "label": "霍尔木兹"
+          },
+          {
+            "id": "suez_canal",
+            "label": "苏伊士"
+          },
+          {
+            "id": "bab_el_mandeb_strait",
+            "label": "曼德海峡"
+          },
+          {
+            "id": "taiwan_strait",
+            "label": "台湾海峡"
+          }
+        ]
+      }
+    },
+    "money_flow_weights": {
+      "one_day_return": 0.12,
+      "five_day_return": 0.2,
+      "twenty_day_return": 0.18,
+      "amount_ratio": 0.12,
+      "amount_share": 0.08,
+      "breadth_up_ratio": 0.08,
+      "leader_stock_pct_change": 0.04,
+      "aux_flow_score": 0.18
+    }
+  },
+  "alerting": {
+    "primary_channel": "bark",
+    "allow_close_summary": true,
+    "default_dedup_window_minutes": 180,
+    "default_escalation_resend": true,
+    "bark": {
+      "server_env": "BARK_SERVER",
+      "device_key_env": "BARK_DEVICE_KEY",
+      "device_keys_env": "BARK_DEVICE_KEYS",
+      "group": "industry-signal-radar",
+      "body_mode": "brief",
+      "level": "active",
+      "is_archive": true,
+      "sound": "",
+      "icon_url": ""
+    }
+  },
+  "email_delivery": {
+    "remote_host": "",
+    "remote_snapshot_json_path": "/opt/industry-signal-radar/output/snapshots/radar_daily_battlecard_snapshot_latest.json",
+    "remote_report_md_path": "/opt/industry-signal-radar/output/reports/radar_daily_battlecard_latest.md",
+    "remote_report_pdf_path": "/opt/industry-signal-radar/output/reports/radar_daily_battlecard_latest.pdf",
+    "remote_kimi_editorial_json_path": "/opt/industry-signal-radar/output/reports/radar_kimi_editorial_latest.json",
+    "remote_handoff_md_path": "/opt/industry-signal-radar/output/handoffs/radar_daily_battlecard_handoff_latest.md",
+    "remote_quality_json_path": "/opt/industry-signal-radar/output/reports/radar_daily_battlecard_quality_latest.json",
+    "remote_quality_md_path": "/opt/industry-signal-radar/output/reports/radar_daily_battlecard_quality_latest.md",
+    "remote_source_readiness_json_path": "/opt/industry-signal-radar/output/reports/radar_source_readiness_latest.json",
+    "local_cache_dir": "~/.codex/state/investment/industry_signal_radar/email_delivery",
+    "state_file": "/opt/industry-signal-radar/state/email_delivery/send_state.json",
+    "email_to": "alerts@example.com",
+    "delivery_backend": "smtp",
+    "report_transport": "local",
+    "smtp_env_file": "/opt/quant-runtime/config/paper_trade_daily.env",
+    "smtp_timeout_seconds": 20,
+    "subject_prefix": "Radar 投资机会日报",
+    "attach_report_pdf": true,
+    "attach_report_md": false,
+    "attach_handoff_md": false,
+    "attach_quality_md": false,
+    "require_report_pdf": true,
+    "require_quality_pass": true,
+    "require_source_readiness_pass": true
+  },
+  "kimi_editorial": {
+    "enabled": true,
+    "required": false,
+    "provider": "kimi_code_k2_6",
+    "model": "anthropic/kimi-for-coding",
+    "model_family": "kimi-k2.6",
+    "base_url": "https://api.kimi.com/coding",
+    "allow_env_base_url_override": true,
+    "allow_env_model_override": true,
+    "timeout_seconds": 120,
+    "retry_attempts": 1,
+    "retry_timeout_seconds": 180,
+    "max_tokens": 2600,
+    "max_focus_items": 3,
+    "max_watch_items": 2,
+    "max_summary_bullets": 3,
+    "env_var_names": [
+      "MOONSHOT_API_KEY",
+      "KIMI_API_KEY",
+      "ANTHROPIC_AUTH_TOKEN"
+    ],
+    "env_file_paths": [
+      "/opt/industry-signal-radar/config/industry_signal_radar.env",
+      "private runtime env file",
+      "~/.config/codex/env.zsh"
+    ],
+    "output_json_path": "output/reports/radar_kimi_editorial_latest.json",
+    "output_md_path": "output/reports/radar_kimi_editorial_latest.md"
+  },
+  "kimi_research_harness": {
+    "enabled": true,
+    "required": true,
+    "provider": "kimi_code_k2_6",
+    "model": "anthropic/kimi-for-coding",
+    "model_family": "kimi-k2.6",
+    "base_url": "https://api.kimi.com/coding",
+    "allow_env_base_url_override": true,
+    "allow_env_model_override": true,
+    "timeout_seconds": 120,
+    "retry_attempts": 1,
+    "retry_timeout_seconds": 180,
+    "max_tokens": 2200,
+    "max_candidates": 12,
+    "planned_batch_size": 4,
+    "env_var_names": [
+      "MOONSHOT_API_KEY",
+      "KIMI_API_KEY",
+      "ANTHROPIC_AUTH_TOKEN"
+    ],
+    "env_file_paths": [
+      "/opt/industry-signal-radar/config/industry_signal_radar.env",
+      "private runtime env file",
+      "~/.config/codex/env.zsh"
+    ],
+    "output_json_path": "output/reports/radar_kimi_research_harness_latest.json",
+    "output_md_path": "output/reports/radar_kimi_research_harness_latest.md"
+  },
+  "source_readiness": {
+    "market_tz": "Asia/Shanghai",
+    "market_open_time": "09:30",
+    "market_sample_ready_time": "18:00",
+    "max_shared_news_age_minutes": 90,
+    "max_source_health_age_minutes": 180,
+    "warn_if_source_health_down_count_gt": 0,
+    "fail_if_source_health_ok_count_lt": 3,
+    "critical_source_ids": [
+      "akshare_news_cctv",
+      "akshare_stock_info_global_cls",
+      "akshare_stock_info_global_em",
+      "cls_telegraph_html"
+    ],
+    "max_sentiment_lag_days": 0,
+    "max_sentiment_warning_lag_days": 3,
+    "output_json_path": "output/reports/radar_source_readiness_latest.json",
+    "output_md_path": "output/reports/radar_source_readiness_latest.md"
+  },
+  "sentiment_sidecar": {
+    "enabled": true,
+    "market_csv_path": "/opt/quant-runtime/data_substrate/sentiment/market_sentiment_factor_daily.csv",
+    "company_csv_path": "/opt/quant-runtime/data_substrate/sentiment/company_sentiment_score_daily.csv",
+    "mirror_dir": "output/sidecars/sentiment",
+    "soft_bark_block_market_composite_below": -0.35
+  },
+  "canonical_market_substrate": {
+    "enabled": true,
+    "db_path": "/opt/quant-runtime/data_substrate/radar_market/radar_market.db",
+    "manifest_path": "/opt/quant-runtime/data_substrate/radar_market/radar_market_manifest.json",
+    "mirror_dir": "output/sidecars/market",
+    "max_db_age_minutes": 180
+  },
+  "price_sidecar": {
+    "enabled": true,
+    "equity_price_db_path": "/opt/quant-runtime/data_substrate/equity_prices/equity_prices.db",
+    "company_price_csv_path": "output/sidecars/equity_prices/company_price_snapshot_latest.csv",
+    "lookback_days": 45
+  },
+  "canonical_price_bridge": {
+    "enabled": true,
+    "lookback_days": 45,
+    "auto_bridge_stale_targets": true,
+    "max_bridge_candidates": 256,
+    "openbb_adapter_paths": [
+      "../scripts/openbb_adapter.py",
+      "/opt/openbb-runtime/scripts/openbb_adapter.py"
+    ],
+    "extra_site_packages": [
+      "/opt/quant-runtime/.venv/lib/python3.12/site-packages",
+      "/opt/openbb-runtime/.venv/lib/python3.12/site-packages"
+    ],
+    "output_path": "output/sidecars/equity_prices/company_price_backfill_latest.json",
+    "remote_output_path": "/opt/industry-signal-radar/output/sidecars/equity_prices/company_price_backfill_latest.json"
+  },
+  "canonical_fundamental_bridge": {
+    "enabled": true,
+    "limit": 4,
+    "max_target_count": 24,
+    "prefer_summary_snapshot": true,
+    "auto_fetch_missing_statements": false,
+    "openbb_adapter_paths": [
+      "../scripts/openbb_adapter.py",
+      "/opt/openbb-runtime/scripts/openbb_adapter.py"
+    ],
+    "openbb_service_env_paths": [
+      "/opt/openbb-runtime/config/openbb_service.env",
+      "../openbb/config/openbb_service.env",
+      "../openbb/config/openbb_service.env"
+    ],
+    "openbb_base_url_candidates": [
+      "http://127.0.0.1:6900",
+      "http://127.0.0.1:16900"
+    ],
+    "openbb_timeout_seconds": 3,
+    "a_share_financial_snapshot_paths": [
+      "/opt/openbb-runtime/exports/financial_substrate/a_share/latest_financial_snapshot.csv"
+    ],
+    "extra_site_packages": [
+      "/opt/quant-runtime/.venv/lib/python3.12/site-packages",
+      "/opt/openbb-runtime/.venv/lib/python3.12/site-packages"
+    ],
+    "output_path": "output/sidecars/fundamentals/company_fundamental_backfill_latest.json",
+    "remote_output_path": "/opt/industry-signal-radar/output/sidecars/fundamentals/company_fundamental_backfill_latest.json"
+  },
+  "market_access_facade": {
+    "enabled": true,
+    "openbb_adapter_paths": [
+      "../scripts/openbb_adapter.py",
+      "/opt/openbb-runtime/scripts/openbb_adapter.py"
+    ],
+    "openbb_service_env_paths": [
+      "/opt/openbb-runtime/config/openbb_service.env",
+      "../openbb/config/openbb_service.env",
+      "../openbb/config/openbb_service.env"
+    ],
+    "openbb_base_url_candidates": [
+      "http://127.0.0.1:6900",
+      "http://127.0.0.1:16900"
+    ],
+    "openbb_timeout_seconds": 3,
+    "extra_site_packages": [
+      "/opt/quant-runtime/.venv/lib/python3.12/site-packages",
+      "/opt/openbb-runtime/.venv/lib/python3.12/site-packages"
+    ]
+  },
+  "signal_access": {
+    "enabled": true,
+    "quant_runtime_defaults_paths": [
+      "../qlib_paper_trading/config/runtime_defaults.json",
+      "/opt/quant-runtime/config/runtime_defaults.json"
+    ],
+    "query_script_paths": [
+      "../qlib_paper_trading/scripts/query_quant_research.py",
+      "/opt/quant-runtime/scripts/query_quant_research.py"
+    ],
+    "remote_python_bin": "/opt/quant-runtime/.venv/bin/python",
+    "timeout_seconds": 120,
+    "company_sidecar_limit": 8,
+    "refresh_if_missing_default": false
+  },
+  "upstream_price_refresh": {
+    "enabled": true,
+    "timeout_seconds": 900,
+    "local_builder_script": "../qlib_paper_trading/scripts/build_equity_price_substrate.py",
+    "local_builder_config": "../qlib_paper_trading/config/runtime_defaults.json",
+    "remote_builder_script": "/opt/quant-runtime/scripts/build_equity_price_substrate.py",
+    "remote_builder_config": "/opt/quant-runtime/config/runtime_defaults.json",
+    "remote_builder_python_bin": "/opt/quant-runtime/.venv/bin/python",
+    "remote_builder_args": [
+      "--skip-hk"
+    ],
+    "remote_bridge_script": "/opt/industry-signal-radar/scripts/build_radar_canonical_price_bridge.py",
+    "remote_candidate_pool_path": "/opt/industry-signal-radar/output/snapshots/radar_candidate_pool_latest.json",
+    "remote_radar_sidecar_script": "/opt/industry-signal-radar/scripts/build_radar_company_price_sidecar.py",
+    "remote_price_csv_path": "/opt/industry-signal-radar/output/sidecars/equity_prices/company_price_snapshot_latest.csv",
+    "remote_price_bridge_json_path": "/opt/industry-signal-radar/output/sidecars/equity_prices/company_price_backfill_latest.json"
+  },
+  "upstream_fundamental_refresh": {
+    "enabled": true,
+    "timeout_seconds": 900,
+    "remote_python_bin": "/opt/industry-signal-radar/.venv/bin/python",
+    "remote_bridge_script": "/opt/industry-signal-radar/scripts/build_radar_canonical_fundamental_bridge.py",
+    "remote_candidate_pool_path": "/opt/industry-signal-radar/output/snapshots/radar_candidate_pool_latest.json",
+    "remote_fundamental_bridge_json_path": "/opt/industry-signal-radar/output/sidecars/fundamentals/company_fundamental_backfill_latest.json"
+  },
+  "upstream_sentiment_refresh": {
+    "enabled": true,
+    "timeout_seconds": 900,
+    "remote_runtime_root": "/opt/quant-runtime",
+    "remote_python_bin": "/opt/quant-runtime/.venv/bin/python",
+    "remote_config_path": "/opt/quant-runtime/config/runtime_defaults.json",
+    "remote_price_build_script": "/opt/quant-runtime/scripts/build_equity_price_substrate.py",
+    "remote_price_build_args": [
+      "--skip-hk"
+    ],
+    "remote_stock_connect_build_script": "/opt/quant-runtime/scripts/build_stock_connect_substrate.py",
+    "remote_build_script": "/opt/quant-runtime/scripts/build_sentiment_factor_substrate.py",
+    "remote_export_script": "/opt/quant-runtime/scripts/export_sentiment_subsystem_snapshot.py",
+    "remote_market_csv_path": "/opt/quant-runtime/data_substrate/sentiment/market_sentiment_factor_daily.csv",
+    "remote_company_csv_path": "/opt/quant-runtime/data_substrate/sentiment/company_sentiment_score_daily.csv"
+  },
+  "news_verification_sidecar": {
+    "enabled": true,
+    "timeout_seconds": 60,
+    "top_company_limit": 6,
+    "article_limit": 8,
+    "event_limit": 5,
+    "live_discovery_threshold_events": 2,
+    "live_discovery_threshold_articles": 4,
+    "max_live_discovery_objects": 4,
+    "discovery_request_timeout_seconds": 10,
+    "discovery_source_ids": [
+      "akshare_stock_info_global_cls",
+      "akshare_stock_info_global_em",
+      "akshare_stock_info_global_ths",
+      "serpstack_company_discovery_optional",
+      "weibo_tracked_mobile",
+      "xueqiu_tracked_search"
+    ],
+    "discovery_skip_event_rebuild": true,
+    "discovery_skip_consumer_export": true,
+    "local_python_bin": "python3",
+    "remote_python_bin": "/opt/quant-runtime/.venv/bin/python",
+    "triage_allowlist": [
+      "immediate_research",
+      "thesis_watch"
+    ],
+    "local_script_path": "../news_event_hub/scripts/run_company_discovery.py",
+    "remote_script_path": "/opt/news-event-hub/scripts/run_company_discovery.py"
+  },
+  "company_enrichment_sidecar": {
+    "enabled": true,
+    "timeout_seconds": 60,
+    "top_company_limit": 8,
+    "article_limit": 8,
+    "event_limit": 5,
+    "live_discovery_threshold_events": 2,
+    "live_discovery_threshold_articles": 4,
+    "max_live_discovery_objects": 4,
+    "discovery_request_timeout_seconds": 10,
+    "discovery_source_ids": [
+      "akshare_stock_info_global_cls",
+      "akshare_stock_info_global_em",
+      "akshare_stock_info_global_ths",
+      "serpstack_company_discovery_optional",
+      "weibo_tracked_mobile",
+      "xueqiu_tracked_search"
+    ],
+    "discovery_skip_event_rebuild": true,
+    "discovery_skip_consumer_export": true,
+    "local_python_bin": "python3",
+    "remote_python_bin": "/opt/quant-runtime/.venv/bin/python",
+    "local_script_path": "../news_event_hub/scripts/run_company_discovery.py",
+    "remote_script_path": "/opt/news-event-hub/scripts/run_company_discovery.py"
+  }
+}

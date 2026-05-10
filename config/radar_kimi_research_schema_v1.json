@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "radar_kimi_research_schema_v1.json",
+  "title": "Radar Kimi Research Harness V1",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status",
+    "run_id",
+    "as_of_date",
+    "candidate_count",
+    "dossiers",
+    "verdicts"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "partial_pass",
+        "deterministic_fallback",
+        "disabled",
+        "skip_no_credentials"
+      ]
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "as_of_date": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "summary": {
+      "type": "string"
+    },
+    "dossiers": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "verdicts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/verdict"
+      }
+    },
+    "ipo_verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "structural_verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "model_coverage": {
+      "type": "object",
+      "properties": {
+        "expected_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "model_generated_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fallback_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverage_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "missing_model_verdicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "verdict": {
+      "type": "object",
+      "required": [
+        "object_id",
+        "name",
+        "task",
+        "decision",
+        "weight_delta",
+        "reason",
+        "evidence_ids",
+        "next_action",
+        "disqualifiers",
+        "confidence",
+        "provenance",
+        "model_generated"
+      ],
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task": {
+          "type": "string"
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "promote",
+            "keep",
+            "watch_only",
+            "reject",
+            "risk_review",
+            "research_gap"
+          ]
+        },
+        "weight_delta": {
+          "type": "integer",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "next_action": {
+          "type": "object",
+          "required": [
+            "when",
+            "check"
+          ],
+          "properties": {
+            "when": {
+              "type": "string",
+              "minLength": 1
+            },
+            "check": {
+              "$ref": "#/$defs/stringArray"
+            }
+          }
+        },
+        "disqualifiers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "provenance": {
+          "type": "string",
+          "enum": [
+            "model_generated",
+            "missing_model_verdict",
+            "deterministic_fallback"
+          ]
+        },
+        "model_generated": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

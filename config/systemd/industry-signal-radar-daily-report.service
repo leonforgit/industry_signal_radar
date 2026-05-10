@@ -1,0 +1,17 @@
+[Unit]
+Description=Industry Signal Radar Daily Report Email
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=radar
+WorkingDirectory=/opt/industry-signal-radar
+EnvironmentFile=-/opt/industry-signal-radar/config/industry_signal_radar.env
+TimeoutStartSec=35min
+ExecStart=/usr/bin/env bash /opt/industry-signal-radar/scripts/run_radar_daily_report_email.sh
+StandardOutput=append:/opt/industry-signal-radar/logs/industry_signal_radar_daily_report.log
+StandardError=append:/opt/industry-signal-radar/logs/industry_signal_radar_daily_report.log
+
+[Install]
+WantedBy=multi-user.target

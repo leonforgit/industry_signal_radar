@@ -1,0 +1,66 @@
+# codex-workspace-bootstrap:start
+.DS_Store
+.report-python-path
+__pycache__/
+*.pyc
+.pytest_cache/
+.playwright-cli/
+.agent-browser/
+reports/rendered/
+docs/rendered/
+output/rendered/
+cache/
+state/
+logs/
+health/
+locks/
+output/*.json
+output/*.md
+# codex-workspace-bootstrap:end
+
+# Runtime and generated state
+.venv/
+runtime/
+output/
+outputs/
+Users/
+
+# Local environment and credentials
+*.env
+.env
+.env.*
+config/industry_signal_radar.env
+config/paper_trade_daily.env
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+.npmrc
+.pypirc
+.netrc
+.aws/
+.ssh/
+ssh_config
+known_hosts
+credentials.json
+secrets.json
+secret.json
+*service-account*.json
+*service_account*.json
+client_secret*.json
+*storage_state*.json
+cookies.json
+cookies.txt
+event
+
+# Private deployment overrides
+config/private/
+config/*.local.json
+config/*private*.json
+config/*deployment*.local.*

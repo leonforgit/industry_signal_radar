@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Industry Signal Radar base tick every 10 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+Persistent=true
+RandomizedDelaySec=60
+Unit=industry-signal-radar.service
+
+[Install]
+WantedBy=timers.target

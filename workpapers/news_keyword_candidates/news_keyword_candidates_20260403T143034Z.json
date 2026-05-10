@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-04-03T14:30:34+00:00",
+  "mapping_generated_at": "2026-04-03T14:20:11+00:00",
+  "sources": [
+    {
+      "source_id": "akshare:news_cctv",
+      "unmatched_count": 0,
+      "unmatched_titles": [],
+      "candidate_tokens": []
+    },
+    {
+      "source_id": "akshare:stock_info_global_cls",
+      "unmatched_count": 0,
+      "unmatched_titles": [],
+      "candidate_tokens": []
+    },
+    {
+      "source_id": "akshare:stock_info_global_em",
+      "unmatched_count": 0,
+      "unmatched_titles": [],
+      "candidate_tokens": []
+    }
+  ]
+}
