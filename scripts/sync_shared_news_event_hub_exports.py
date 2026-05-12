@@ -13,6 +13,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from radar_upstream_bridge import quote_remote_command
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CONFIG_PATH = ROOT / "config" / "runtime_defaults.json"
@@ -47,7 +49,7 @@ def mirror_remote_json(host: str, ssh_options: str, remote_path: str, local_path
     command = ["ssh"]
     if ssh_options.strip():
         command.extend(shlex.split(ssh_options))
-    command.extend([host, "cat", remote_path])
+    command.extend([host, quote_remote_command(["cat", remote_path])])
     tmp_path = local_path.with_suffix(local_path.suffix + ".tmp")
     local_path.parent.mkdir(parents=True, exist_ok=True)
     with tmp_path.open("wb") as handle:

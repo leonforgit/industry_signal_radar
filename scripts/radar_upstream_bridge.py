@@ -26,12 +26,17 @@ def load_deployment_config(config_path: Path | None = None) -> dict[str, Any]:
     return resolved
 
 
+def quote_remote_command(remote_command: list[str]) -> str:
+    return " ".join(shlex.quote(str(part)) for part in remote_command)
+
+
 def build_ssh_command(host: str, ssh_options: str, remote_command: list[str]) -> list[str]:
     command = ["ssh"]
     if ssh_options.strip():
         command.extend(shlex.split(ssh_options))
     command.append(host)
-    command.extend(remote_command)
+    if remote_command:
+        command.append(quote_remote_command(remote_command))
     return command
 
 

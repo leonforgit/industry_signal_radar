@@ -4,6 +4,20 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 CONFIG_PATH="${CONFIG_PATH:-${PROJECT_ROOT}/config/runtime_defaults.json}"
+ENABLE_DAILY_REPORT_TIMER="${ENABLE_DAILY_REPORT_TIMER:-0}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --enable-daily-report-timer)
+      ENABLE_DAILY_REPORT_TIMER=1
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
 
 config_value() {
   python3 - "$CONFIG_PATH" "$1" <<'PY'
@@ -197,6 +211,12 @@ echo "[5/6] Running remote bootstrap check-only"
 ssh_remote "source '${REMOTE_VENV}/bin/activate' && python '${REMOTE_ROOT}/scripts/radar_runtime_bootstrap.py' --check-only"
 
 echo "[6/6] Enabling timer"
-ssh_remote "systemctl enable --now '${TIMER_NAME}' '${DAILY_REPORT_TIMER_NAME}'; systemctl status '${TIMER_NAME}' --no-pager; systemctl status '${DAILY_REPORT_TIMER_NAME}' --no-pager"
+ssh_remote "systemctl enable --now '${TIMER_NAME}'; systemctl status '${TIMER_NAME}' --no-pager"
+if [[ "${ENABLE_DAILY_REPORT_TIMER}" == "1" ]]; then
+  ssh_remote "systemctl enable --now '${DAILY_REPORT_TIMER_NAME}'; systemctl status '${DAILY_REPORT_TIMER_NAME}' --no-pager"
+else
+  echo "Daily report email timer installed but not enabled. Re-run with --enable-daily-report-timer after SMTP dry-run validation passes."
+  ssh_remote "systemctl list-unit-files '${DAILY_REPORT_TIMER_NAME}' --no-pager || true"
+fi
 
 echo "Remote Industry Signal Radar installed on ${REMOTE_HOST}"

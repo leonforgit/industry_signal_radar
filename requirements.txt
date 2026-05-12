@@ -1,5 +1,5 @@
-akshare>=1.15
-beautifulsoup4>=4.12
-pandas>=2.0
-PyYAML>=6.0
-requests>=2.31
+akshare==1.18.40
+beautifulsoup4==4.14.3
+pandas==2.3.3
+PyYAML==6.0.3
+requests==2.33.0

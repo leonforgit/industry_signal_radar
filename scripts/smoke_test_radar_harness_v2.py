@@ -25,6 +25,7 @@ from build_radar_agent_task_queue import (
     queue_payload,
     reclaim_expired_leases,
     release_task,
+    run_validation_commands,
     start_task,
 )
 from build_radar_kimi_research_harness import coverage_for_sidecar, dedupe_sidecar_rows
@@ -368,6 +369,21 @@ def main() -> int:
         expected_timeout = 5 * 2 + 120
         if completion_timeout_seconds(repair_budget_task, validation_timeout_seconds=5) != expected_timeout:
             raise AssertionError(f"auto-worker timeout must include repair + validation commands: {repair_budget_task}")
+
+        validation_env_results = run_validation_commands(
+            [f"RADAR_SMOKE_ENV=ok {shlex.quote(sys.executable)} -c \"import os; assert os.environ['RADAR_SMOKE_ENV'] == 'ok'\""],
+            timeout_seconds=5,
+        )
+        if not validation_env_results or validation_env_results[0].get("status") != "pass":
+            raise AssertionError(f"validation env prefix failed without shell: {validation_env_results}")
+
+        injection_marker = Path(tmpdir) / "shell_injection_marker"
+        validation_injection_results = run_validation_commands(
+            [f"{shlex.quote(sys.executable)} -c \"print('validation ok')\" ; touch {shlex.quote(str(injection_marker))}"],
+            timeout_seconds=5,
+        )
+        if injection_marker.exists() or not validation_injection_results or validation_injection_results[0].get("status") != "pass":
+            raise AssertionError(f"validation command should not execute shell metacharacters: {validation_injection_results}")
 
         queue_json = Path(tmpdir) / "queue.json"
         queue_md = Path(tmpdir) / "queue.md"

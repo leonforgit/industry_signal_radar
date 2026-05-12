@@ -139,3 +139,5 @@ bash -n scripts/run_radar_daily_report_email.sh
 systemctl cat industry-signal-radar-daily-report.service
 systemctl list-timers industry-signal-radar-daily-report.timer --no-pager
 ```
+
+Public install safety: `scripts/install_remote_industry_signal_radar.sh` installs the daily-report service/timer but does not enable the email timer unless `--enable-daily-report-timer` is passed after SMTP dry-run validation.

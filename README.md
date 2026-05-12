@@ -147,7 +147,7 @@
 - 每完成一轮推进后，先回写执行主控文档，再更新其他文档
 - 需要生成 `PM` 可用正式作战单时，优先跑 `python3 scripts/build_radar_workspace_outputs.py`；通过质量门禁后消费 `output/reports/radar_daily_battlecard_latest.md/.pdf`。`radar_daily_report_latest.*` 是完整日报渲染的中间 latest，`radar_intraday_scan_report_latest.md` 才是盘中扫描预览，二者不要混用。完整 build 还会写出 `output/runs/radar_harness_manifest_latest.json`，用于追踪每个节点的输入、输出、耗时、降级和失败点。
 - Harness 的冻结合同和缺陷账本见 `docs/radar_harness_contract_v1.md`；后续 review 先把 finding 归入 active/fixed/obsolete/deferred，再决定是否改代码。
-- 需要检查 remote runtime 每日邮件投递链时，优先看 `industry-signal-radar-daily-report.timer`、`health/radar_daily_email_delivery_latest.json` 和 `scripts/send_radar_daily_report_email.py`；当前 timer 已按每天 `08:15 CST` 开盘前晨报配置，周末也会发一版。
+- 需要检查 remote runtime 每日邮件投递链时，优先看 `industry-signal-radar-daily-report.timer`、`health/radar_daily_email_delivery_latest.json` 和 `scripts/send_radar_daily_report_email.py`；timer 单元按每天 `08:15 CST` 开盘前晨报配置，但公开安装脚本默认只安装不启用日报邮件 timer，必须在 SMTP dry-run 验证后显式传 `--enable-daily-report-timer`。
 - 当前日报邮件默认以 `PDF` 为正式附件，邮件正文只保留摘要
 - 当前日报链在生成前会先跑 `source readiness`：只有 `News Event Hub / sentiment sidecar / canonical market substrate` 三层都通过 freshness 门禁，日报和邮件才应继续往下走；同时会读取 `News Event Hub` 的 `source_health_latest.json`，把 degraded / down 源带入 quality warning，不再只凭 feed 时间戳放行。
 - 当前 `data substrate audit` 负责暴露价格、财务、辅助源的持续缺口；这些缺口默认进入 `warn`，不再直接阻塞日报主链

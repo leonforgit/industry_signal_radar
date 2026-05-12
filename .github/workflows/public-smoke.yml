@@ -27,6 +27,7 @@ jobs:
       - name: Run public smoke tests
         run: |
           python scripts/smoke_test_radar_candidate_pool.py
+          python scripts/smoke_test_radar_upstream_bridge.py
           python scripts/smoke_test_radar_harness_v2.py
           python scripts/smoke_test_radar_news_verification_sidecar.py
           python scripts/smoke_test_shared_news_overlay.py

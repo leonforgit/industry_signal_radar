@@ -229,8 +229,8 @@
     "model": "anthropic/kimi-for-coding",
     "model_family": "kimi-k2.6",
     "base_url": "https://api.kimi.com/coding",
-    "allow_env_base_url_override": true,
-    "allow_env_model_override": true,
+    "allow_env_base_url_override": false,
+    "allow_env_model_override": false,
     "timeout_seconds": 120,
     "retry_attempts": 1,
     "retry_timeout_seconds": 180,
@@ -244,9 +244,7 @@
       "ANTHROPIC_AUTH_TOKEN"
     ],
     "env_file_paths": [
-      "/opt/industry-signal-radar/config/industry_signal_radar.env",
-      "private runtime env file",
-      "~/.config/codex/env.zsh"
+      "/opt/industry-signal-radar/config/industry_signal_radar.env"
     ],
     "output_json_path": "output/reports/radar_kimi_editorial_latest.json",
     "output_md_path": "output/reports/radar_kimi_editorial_latest.md"
@@ -258,8 +256,8 @@
     "model": "anthropic/kimi-for-coding",
     "model_family": "kimi-k2.6",
     "base_url": "https://api.kimi.com/coding",
-    "allow_env_base_url_override": true,
-    "allow_env_model_override": true,
+    "allow_env_base_url_override": false,
+    "allow_env_model_override": false,
     "timeout_seconds": 120,
     "retry_attempts": 1,
     "retry_timeout_seconds": 180,
@@ -272,9 +270,7 @@
       "ANTHROPIC_AUTH_TOKEN"
     ],
     "env_file_paths": [
-      "/opt/industry-signal-radar/config/industry_signal_radar.env",
-      "private runtime env file",
-      "~/.config/codex/env.zsh"
+      "/opt/industry-signal-radar/config/industry_signal_radar.env"
     ],
     "output_json_path": "output/reports/radar_kimi_research_harness_latest.json",
     "output_md_path": "output/reports/radar_kimi_research_harness_latest.md"

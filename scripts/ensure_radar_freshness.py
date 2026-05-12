@@ -14,6 +14,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from radar_freshness_utils import summarize_snapshot_freshness
+from radar_upstream_bridge import quote_remote_command
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -95,7 +96,8 @@ def build_ssh_command(host: str, ssh_options: str, remote_command: list[str]) ->
     if ssh_options.strip():
         command.extend(shlex.split(ssh_options))
     command.append(host)
-    command.extend(remote_command)
+    if remote_command:
+        command.append(quote_remote_command(remote_command))
     return command
 
 

@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from radar_upstream_bridge import build_scp_command
+from radar_upstream_bridge import build_scp_command, quote_remote_command
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -41,7 +41,7 @@ def build_ssh_command(host: str, ssh_options: str, remote_path: str) -> list[str
     command = ["ssh"]
     if ssh_options.strip():
         command.extend(shlex.split(ssh_options))
-    command.extend([host, "cat", remote_path])
+    command.extend([host, quote_remote_command(["cat", remote_path])])
     return command
 
 
@@ -49,7 +49,7 @@ def run_remote_python(host: str, ssh_options: str, remote_script: str) -> subpro
     command = ["ssh"]
     if ssh_options.strip():
         command.extend(shlex.split(ssh_options))
-    command.extend([host, "python3", "-"])
+    command.extend([host, quote_remote_command(["python3", "-"])])
     return subprocess.run(command, input=remote_script, check=False, capture_output=True, text=True)
 
 

@@ -86,7 +86,7 @@
   - 支持 `--check-only`
 - `install_remote_industry_signal_radar.sh`
   - 把脚本、配置、wrapper 和 systemd 单元同步到 a private runtime configured outside this repository
-  - 启用基础 scan timer 和日报邮件 timer
+  - 默认只启用基础 scan timer；日报邮件 timer 只安装不启用，SMTP dry-run 验证后再传 `--enable-daily-report-timer`
 - `install_radar_daily_smtp_env.sh`
   - 给 a private runtime configured outside this repository 安装 Radar 日报 SMTP env
   - 默认兼容已有的 remote runtime 邮件发信配置

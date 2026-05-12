@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shlex
 import subprocess
 import sys
 import time
@@ -250,6 +251,20 @@ def result_artifact_path(task: dict[str, Any]) -> Path:
     return raw if raw.is_absolute() else ROOT / raw
 
 
+def split_validation_command(command_text: str) -> tuple[list[str], dict[str, str]]:
+    tokens = shlex.split(command_text)
+    env: dict[str, str] = {}
+    while tokens:
+        key, sep, value = tokens[0].partition("=")
+        if not sep or not key.isidentifier():
+            break
+        env[key] = value
+        tokens = tokens[1:]
+    if not tokens:
+        raise ValueError("validation command has no executable")
+    return tokens, env
+
+
 def run_validation_commands(commands: list[str], *, timeout_seconds: int) -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     for command in commands:
@@ -259,14 +274,26 @@ def run_validation_commands(commands: list[str], *, timeout_seconds: int) -> lis
         started = time.monotonic()
         row: dict[str, Any] = {"command": command_text, "status": "running", "timeout_seconds": timeout_seconds}
         try:
+            command_args, command_env = split_validation_command(command_text)
             completed = subprocess.run(
-                command_text,
+                command_args,
                 cwd=ROOT,
-                shell=True,
+                env={**os.environ, **command_env},
                 check=False,
                 text=True,
                 capture_output=True,
                 timeout=max(timeout_seconds, 1),
+            )
+        except (OSError, ValueError) as exc:
+            row.update(
+                {
+                    "status": "fail",
+                    "timed_out": False,
+                    "returncode": None,
+                    "duration_seconds": round(time.monotonic() - started, 3),
+                    "stdout_tail": "",
+                    "stderr_tail": tail_text(str(exc)),
+                }
             )
         except subprocess.TimeoutExpired as exc:
             row.update(

@@ -357,8 +357,8 @@ def credential_endpoint_for_key(
     allow_env_base_url_override: bool,
 ) -> tuple[str, str]:
     if key_name == "MOONSHOT_API_KEY":
-        base_url = str(env_payload.get("MOONSHOT_BASE_URL") or "").strip().rstrip("/")
-        model = str(env_payload.get("KIMI_MODEL") or "").strip()
+        base_url = str(env_payload.get("MOONSHOT_BASE_URL") or "").strip().rstrip("/") if allow_env_base_url_override else ""
+        model = str(env_payload.get("KIMI_MODEL") or "").strip() if allow_env_model_override else ""
         if not base_url:
             base_url = cfg_base_url if "api.moonshot." in cfg_base_url else "https://api.moonshot.ai/v1"
         if not model:
